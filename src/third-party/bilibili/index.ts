@@ -1,4 +1,4 @@
 import { BilibiliTool } from "./tool";
-import { BilibiliUser, BilibiliVideo } from "./type";
+import { BilibiliVideo, BilibiliVideoOwner } from "./type";
 
-export { BilibiliTool, BilibiliUser, BilibiliVideo };
+export { BilibiliTool, BilibiliVideo, BilibiliVideoOwner };
