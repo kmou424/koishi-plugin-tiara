@@ -1,0 +1,71 @@
+name: Build and Package Tiara
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: node:22-trixie
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y git
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare environment
+        run: |
+          set -e
+          npm i -g pnpm
+          yarn -v || true
+          pnpm -v || true
+
+      - name: Setup koishi and build
+        run: |
+          set -euo pipefail
+          cd "$HOME"
+          printf "koishi\n" | yarn create koishi
+          cd "$HOME/koishi"
+          YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn --no-immutable
+
+          rm -f yarn.lock || true
+          sed -i '/"packageManager": ".*"/d' package.json
+
+          mkdir -p external/koishi-plugin-tiara
+          tar --exclude .git --exclude .github -C "$GITHUB_WORKSPACE" -cf - . | tar -C external/koishi-plugin-tiara -xf -
+
+          cd "$HOME/koishi/external/koishi-plugin-tiara"
+          pnpm install --no-frozen-lockfile
+
+          cd "$HOME/koishi"
+          pnpm run build
+
+      - name: Prepare artifact directory
+        run: |
+          set -euo pipefail
+          VERSION=$(node -p "require('$HOME/koishi/external/koishi-plugin-tiara/package.json').version")
+          SHORT_SHA=${GITHUB_SHA::7}
+          ARTIFACT_NAME="koishi-plugin-tiara-${VERSION}-${SHORT_SHA}"
+
+          mkdir -p "$GITHUB_WORKSPACE/bundle/koishi-plugin-tiara"
+          cp -r "$HOME/koishi/external/koishi-plugin-tiara/lib" "$GITHUB_WORKSPACE/bundle/koishi-plugin-tiara/"
+          cp "$HOME/koishi/external/koishi-plugin-tiara/package.json" "$GITHUB_WORKSPACE/bundle/koishi-plugin-tiara/"
+
+          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> "$GITHUB_ENV"
+          echo "Prepared artifact dir: $GITHUB_WORKSPACE/bundle/koishi-plugin-tiara as $ARTIFACT_NAME.zip"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: bundle/koishi-plugin-tiara
+          if-no-files-found: error
+          retention-days: 14
