@@ -1,6 +1,6 @@
 {
   "name": "koishi-plugin-tiara",
-  "description": "all in one plugin",
+  "description": "all-in-one plugin for self use",
   "version": "0.0.1",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -9,14 +9,19 @@
     "dist"
   ],
   "license": "MIT",
+  "author": "kmou424 <me@kmou424.moe>",
   "scripts": {},
   "keywords": [
     "chatbot",
     "koishi",
     "plugin"
   ],
-  "devDependencies": {},
   "peerDependencies": {
     "koishi": "^4.18.7"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "cheerio": "^1.1.2",
+    "handlebars": "^4.7.8"
   }
 }

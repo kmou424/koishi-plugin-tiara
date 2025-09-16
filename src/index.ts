@@ -1,11 +1,12 @@
-import { Context, Schema } from 'koishi'
+import { Context, Schema } from "koishi";
+import { message_callback } from "./handler/callback";
 
-export const name = 'tiara'
+export const name = "tiara";
 
 export interface Config {}
 
-export const Config: Schema<Config> = Schema.object({})
+export const Config: Schema<Config> = Schema.object({});
 
 export function apply(ctx: Context) {
-  // write your plugin here
+  ctx.on("message", message_callback);
 }
