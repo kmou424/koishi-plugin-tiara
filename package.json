@@ -10,7 +10,9 @@
   ],
   "license": "MIT",
   "author": "kmou424 <me@kmou424.moe>",
-  "scripts": {},
+  "scripts": {
+    "build": "tsc -b"
+  },
   "keywords": [
     "chatbot",
     "koishi",
