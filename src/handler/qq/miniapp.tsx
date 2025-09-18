@@ -42,15 +42,17 @@ const handlerThis: MessageHandler & {
 };
 
 handlerThis.template = {
-  content: `{{video.title}} - [{{video.owner.name}}]
+  templates: {
+    video_info: `{{video.title}} - [{{video.owner.name}}]
 时长: {{duration}}
 {{#if desc_trimmed}}
 简介: {{desc_trimmed}}
 {{/if}}
 链接: {{url}}
 `,
+  },
   render(args: Object): string {
-    return Handlebars.compile(this.content)(args);
+    return Handlebars.compile(this.templates.video_info)(args);
   },
 };
 
