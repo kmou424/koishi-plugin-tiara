@@ -1,7 +1,7 @@
 import { Context, h } from "koishi";
 import { Message, make_message } from "@tiara/core/protocol";
 import {
-  MessageHandler,
+  MessageHandlerFunc,
   MsgContent,
   MsgPlatform,
   MsgType,
@@ -18,7 +18,7 @@ export const MiniAppMessageHandlerHub = (ctx: Context) => {
     });
 };
 
-const handlerThis: MessageHandler & {
+const handlerThis: MessageHandlerFunc & {
   is_miniapp_message: (item: MsgContent) => boolean;
 
   handle_bilibili: (msg: Message, qqdocurl: string) => Promise<void>;

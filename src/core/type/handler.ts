@@ -2,11 +2,9 @@ import { Context } from "koishi";
 import { Message } from "../protocol";
 import { Template } from "../template";
 
-export interface HandlerHub {
-  (ctx: Context): void;
-}
+export type HandlerHub = (ctx: Context) => void;
 
-export interface MessageHandler {
+export interface MessageHandlerFunc {
   (msg: Message): Promise<void>;
   template: Template;
 }
