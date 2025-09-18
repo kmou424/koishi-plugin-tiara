@@ -1,3 +1,1 @@
-import { Template } from "./type";
-
-export { Template };
+export * from "./type";

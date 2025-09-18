@@ -12,7 +12,15 @@
     "moduleResolution": "node",
     "jsx": "react-jsx",
     "jsxImportSource": "@satorijs/element",
-    "types": ["node", "yml-register/types"]
+    "types": ["node", "yml-register/types"],
+    "baseUrl": ".",
+    "paths": {
+      "@tiara/*": ["src/*"],
+      "@tiara/core/*": ["src/core/*"],
+      "@tiara/handler/*": ["src/handler/*"],
+      "@tiara/third-party/*": ["src/third-party/*"],
+      "@tiara/util/*": ["src/util/*"]
+    }
   },
   "include": ["src"]
 }

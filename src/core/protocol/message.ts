@@ -1,17 +1,17 @@
 import { Guild, GuildMember } from "@satorijs/protocol";
+import TTLCache from "@tiara/core/cache/ttl_cache";
+import { MsgContent, MsgPlatform, MsgType } from "@tiara/core/type";
 import { Session } from "koishi";
-import TTLCache from "../cache/ttl_cache";
 import { MemberRole } from "./member";
-import { MsgChannel, MsgContent, MsgType } from "./type";
 
-const parse_msg_channel = (channel: string | null): MsgChannel => {
-  switch (channel) {
+const parse_msg_platform = (platform: string | null): MsgPlatform => {
+  switch (platform) {
     case "onebot":
-      return MsgChannel.QQ;
+      return MsgPlatform.QQ;
     case "telegram":
-      return MsgChannel.Telegram;
+      return MsgPlatform.Telegram;
     default:
-      return MsgChannel.Unknown;
+      return MsgPlatform.Unknown;
   }
 };
 
@@ -53,8 +53,8 @@ class Message {
     this.session = session;
   }
 
-  get channel(): MsgChannel {
-    return parse_msg_channel(this.session.event._type);
+  get platform(): MsgPlatform {
+    return parse_msg_platform(this.session.event._type);
   }
 
   get content(): Array<MsgContent> {
