@@ -1,5 +1,6 @@
 import { Config } from "@tiara/config";
 import { PluginContext } from "@tiara/core/type";
+import { IsTruthHandlerHub } from "@tiara/handler/common";
 import { MiniAppMessageHandlerHub } from "@tiara/handler/qq";
 import { Context as KoishiContext } from "koishi";
 
@@ -15,6 +16,8 @@ export async function apply(koishiCtx: KoishiContext, config: Config) {
 
   // 小程序消息处理器
   MiniAppMessageHandlerHub(ctx);
+  // 求证事实处理器
+  IsTruthHandlerHub(ctx);
 }
 
 export async function init(ctx: PluginContext) {
