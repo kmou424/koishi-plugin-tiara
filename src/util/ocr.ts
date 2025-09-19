@@ -2,8 +2,8 @@ import { TODO } from "@tiara/util/runtime";
 import axios from "axios";
 import { Schema } from "koishi";
 
-type PerdictFunc = (options: BaseOCR.Options) => Promise<string>;
-type PrecheckFunc = (config: BaseOCR.Config) => Promise<boolean>;
+type PerdictFunc = (options: OCR.Options) => Promise<string>;
+type PrecheckFunc = (config: OCR.Config) => Promise<boolean>;
 
 export namespace PaddleOCR {
   export const Enabled = true;
@@ -85,7 +85,7 @@ export namespace TesseractOCR {
   };
 }
 
-export namespace BaseOCR {
+export namespace OCR {
   export interface Config {
     engine: "paddleocr" | "tesseract";
   }
@@ -102,6 +102,13 @@ export namespace BaseOCR {
       .default("paddleocr")
       .description("OCR 引擎"),
   });
+
+  export type ConfigOptions = PaddleOCR.Config | TesseractOCR.Config;
+
+  export const ConfigOptions: Schema<ConfigOptions> = Schema.union([
+    PaddleOCR.Config,
+    TesseractOCR.Config,
+  ]);
 
   export interface Options {
     config: Config;
