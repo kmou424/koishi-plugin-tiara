@@ -51,10 +51,14 @@ export namespace PaddleOCR {
     const config = c as Config;
     const url = new URL(config.endpoint);
     url.pathname = "/ocr/health";
-    const resp = await axios.get(url.toString(), {
-      timeout: 5000,
-    });
-    return resp.status === 200;
+    try {
+      const resp = await axios.get(url.toString(), {
+        timeout: 5000,
+      });
+      return resp.status === 200;
+    } catch (error) {
+      return false;
+    }
   };
 }
 
