@@ -1,7 +1,5 @@
-import { OCR } from "@tiara/util/ocr";
+import OCR from "@tiara/third-party/ocr";
 import { Schema } from "koishi";
-
-export * from "@tiara/util/ocr";
 
 export const AppName = "tiara";
 
