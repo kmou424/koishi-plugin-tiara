@@ -1,13 +1,20 @@
+import { BaseOCR, Config } from "@tiara/config";
+import { PluginContext, makePluginContext } from "@tiara/core/type";
 import { MiniAppMessageHandlerHub } from "@tiara/handler/qq";
-import { Context, Schema } from "koishi";
+import { Context as KoishiContext } from "koishi";
 
-export const name = "tiara";
+export * from "@tiara/config";
+export { AppName as name } from "@tiara/config";
 
-export interface Config {}
+export async function apply(koishiCtx: KoishiContext, config: Config) {
+  const ctx = makePluginContext(koishiCtx, config);
 
-export const Config: Schema<Config> = Schema.object({});
+  await init(ctx);
 
-export function apply(ctx: Context) {
   // 小程序消息处理器
   MiniAppMessageHandlerHub(ctx);
+}
+
+export async function init(ctx: PluginContext) {
+  await BaseOCR.precheck(ctx.cfg);
 }

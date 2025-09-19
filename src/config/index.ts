@@ -3,6 +3,8 @@ import { Schema } from "koishi";
 
 export * from "@tiara/util/ocr";
 
+export const AppName = "tiara";
+
 export interface BaseConfig {}
 
 export const BaseConfig: Schema<BaseConfig> = Schema.object({}).description(

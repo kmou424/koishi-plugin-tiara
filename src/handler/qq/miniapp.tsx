@@ -1,17 +1,19 @@
-import { Context, h } from "koishi";
+import { h } from "koishi";
 import { Message, make_message } from "@tiara/core/protocol";
 import {
+  HandlerHub,
   MessageHandlerFunc,
   MsgContent,
   MsgPlatform,
   MsgType,
+  PluginContext,
 } from "@tiara/core/type";
 import { BilibiliAPI, BilibiliTool } from "@tiara/third-party/bilibili";
 import { format_duration } from "@tiara/util/time";
 import Handlebars from "handlebars";
 
-export const MiniAppMessageHandlerHub = (ctx: Context) => {
-  ctx
+export const MiniAppMessageHandlerHub: HandlerHub = (ctx: PluginContext) => {
+  ctx()
     .platform(...MsgPlatform.as_koishi(MsgPlatform.QQ))
     .on("message", (session) => {
       handlerThis(make_message(session));
