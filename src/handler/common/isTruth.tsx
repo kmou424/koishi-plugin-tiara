@@ -1,12 +1,12 @@
-import { CommandHandlerInput, PluginContext } from "@tiara/core/type";
+import { CommandHandlerInput, PluginContext } from "../../core/type";
 import { Command, h } from "koishi";
 
 import LLM, {
   ChatCompletionsRequest,
   ErrCode,
   MessageRole,
-} from "@tiara/third-party/llm";
-import OCR from "@tiara/third-party/ocr";
+} from "../../third-party/llm";
+import OCR from "../../third-party/ocr";
 
 export const IsTruthHandlerHub = (ctx: PluginContext) => {
   ctx()

@@ -1,6 +1,6 @@
-import LLM from "@tiara/third-party/llm";
-import OCR from "@tiara/third-party/ocr";
 import { Schema } from "koishi";
+import LLM from "../third-party/llm";
+import OCR from "../third-party/ocr";
 
 export const AppName = "tiara";
 

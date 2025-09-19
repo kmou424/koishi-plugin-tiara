@@ -1,7 +1,7 @@
 import { Guild, GuildMember } from "@satorijs/protocol";
-import TTLCache from "@tiara/core/cache/ttl_cache";
-import { MsgContent, MsgPlatform, MsgType } from "@tiara/core/type";
 import { Session } from "koishi";
+import TTLCache from "../cache/ttl_cache";
+import { MsgContent, MsgPlatform, MsgType } from "../type";
 import { MemberRole } from "./member";
 
 const parseMsgPlatform = (platform: string | null): MsgPlatform => {

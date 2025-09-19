@@ -1,13 +1,13 @@
-import { Config } from "@tiara/config";
-import { PluginContext } from "@tiara/core/type";
-import { IsTruthHandlerHub } from "@tiara/handler/common";
-import { MiniAppMessageHandlerHub } from "@tiara/handler/qq";
 import { Context as KoishiContext } from "koishi";
+import { Config } from "./config";
+import { PluginContext } from "./core/type";
+import { IsTruthHandlerHub } from "./handler/common";
+import { MiniAppMessageHandlerHub } from "./handler/qq";
 
-import OCR from "@tiara/third-party/ocr";
+import OCR from "./third-party/ocr";
 
-export * from "@tiara/config";
-export { AppName as name } from "@tiara/config";
+export * from "./config";
+export { AppName as name } from "./config";
 
 export async function apply(koishiCtx: KoishiContext, config: Config) {
   const ctx = PluginContext(koishiCtx, config);

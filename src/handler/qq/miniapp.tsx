@@ -1,14 +1,14 @@
 import { h } from "koishi";
-import { Message } from "@tiara/core/protocol";
+import { Message } from "../../core/protocol";
 import {
   HandlerHub,
   MsgContent,
   MsgPlatform,
   MsgType,
   PluginContext,
-} from "@tiara/core/type";
-import { BilibiliAPI, BilibiliTool } from "@tiara/third-party/bilibili";
-import { formatDuration } from "@tiara/util/time";
+} from "../../core/type";
+import { BilibiliAPI, BilibiliTool } from "../../third-party/bilibili";
+import { formatDuration } from "../../util/time";
 import Handlebars from "handlebars";
 
 export const MiniAppMessageHandlerHub: HandlerHub = (ctx: PluginContext) => {

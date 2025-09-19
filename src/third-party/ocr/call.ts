@@ -1,4 +1,4 @@
-import { PluginContext } from "@tiara/core/type";
+import { PluginContext } from "../../core/type";
 import { PaddleOCR, TesseractOCR } from "./providers";
 import { PerdictFunc, PrecheckFunc, PredictOptions } from "./type";
 

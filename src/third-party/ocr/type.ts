@@ -1,4 +1,4 @@
-import { PluginContext } from "@tiara/core/type";
+import { PluginContext } from "../../core/type";
 import { Config } from "./config";
 
 export interface PredictOptions {

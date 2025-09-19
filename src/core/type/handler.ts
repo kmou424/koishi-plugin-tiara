@@ -1,6 +1,6 @@
-import { Message } from "@tiara/core/protocol";
-import { Template } from "@tiara/core/template";
 import { Command, Session } from "koishi";
+import { Message } from "../protocol";
+import { Template } from "../template";
 import { PluginContext } from "./context";
 
 export type HandlerHub = (ctx: PluginContext) => void;

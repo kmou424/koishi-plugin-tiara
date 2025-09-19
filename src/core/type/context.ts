@@ -1,6 +1,6 @@
-import { AppName, Config } from "@tiara/config";
 import { Context as KoishiContext, Logger } from "koishi";
 import { env } from "process";
+import { AppName, Config } from "../../config";
 
 export type PluginContext = {
   (): KoishiContext;

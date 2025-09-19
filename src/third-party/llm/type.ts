@@ -1,4 +1,4 @@
-import { PluginContext } from "@tiara/core/type";
+import { PluginContext } from "../../core/type";
 
 export enum MessageRole {
   User = "user",

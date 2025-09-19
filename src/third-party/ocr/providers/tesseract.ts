@@ -1,4 +1,4 @@
-import { TODO } from "@tiara/util/runtime";
+import { TODO } from "../../../util/runtime";
 import { Schema } from "koishi";
 import { PerdictFunc, PrecheckFunc } from "../type";
 
