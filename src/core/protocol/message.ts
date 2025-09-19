@@ -4,7 +4,7 @@ import { MsgContent, MsgPlatform, MsgType } from "@tiara/core/type";
 import { Session } from "koishi";
 import { MemberRole } from "./member";
 
-const parse_msg_platform = (platform: string | null): MsgPlatform => {
+const parseMsgPlatform = (platform: string | null): MsgPlatform => {
   switch (platform) {
     case "onebot":
       return MsgPlatform.QQ;
@@ -15,25 +15,23 @@ const parse_msg_platform = (platform: string | null): MsgPlatform => {
   }
 };
 
-const parse_msg_type = (type: string): MsgType => {
+const parseMsgType = (type: string): MsgType => {
   if (Object.values(MsgType).includes(type as MsgType)) {
     return type as MsgType;
   }
   return MsgType.Unknown;
 };
 
-const parse_msg_content = (
-  message: Array<Object> | null
-): Array<MsgContent> => {
+const parseMsgContent = (message: Array<Object> | null): Array<MsgContent> => {
   return message.map((item) => {
     return {
-      type: parse_msg_type(item["type"]),
+      type: parseMsgType(item["type"]),
       data: item["data"]?.["data"] ? JSON.parse(item["data"]?.["data"]) : "{}",
     };
   });
 };
 
-const parse_member_role = (role: string): MemberRole => {
+const parseMemberRole = (role: string): MemberRole => {
   switch (role) {
     case "owner":
       return MemberRole.Owner;
@@ -46,7 +44,7 @@ const parse_member_role = (role: string): MemberRole => {
   }
 };
 
-class Message {
+export class Message {
   session: Session;
 
   constructor(session: Session) {
@@ -54,14 +52,14 @@ class Message {
   }
 
   get platform(): MsgPlatform {
-    return parse_msg_platform(this.session.event._type);
+    return parseMsgPlatform(this.session.event._type);
   }
 
   get content(): Array<MsgContent> {
-    return parse_msg_content(this.session.event._data?.message);
+    return parseMsgContent(this.session.event._data?.message);
   }
 
-  get is_group(): boolean {
+  get isGroup(): boolean {
     return this.session.event.guild !== null;
   }
 
@@ -74,8 +72,8 @@ class Message {
     return members.data;
   });
 
-  async can_delete(): Promise<boolean> {
-    if (this.is_group) {
+  async canDelete(): Promise<boolean> {
+    if (this.isGroup) {
       // 群聊 [群主] 可以撤回所有消息
       // 群聊 [管理员] 可以撤回普通成员的消息
 
@@ -83,7 +81,7 @@ class Message {
       const myRole: MemberRole = Math.max(
         ...((await this.members.get())
           ?.find((member) => member.user?.id === this.session.event.selfId)
-          ?.roles?.map((role) => parse_member_role(role)) || [])
+          ?.roles?.map((role) => parseMemberRole(role)) || [])
       ) as MemberRole;
 
       // 是管理员或群主
@@ -91,7 +89,7 @@ class Message {
         // 判断目标身份
         const targetRole: MemberRole = Math.max(
           ...(this.session.event?.member?.roles?.map((role) =>
-            parse_member_role(role)
+            parseMemberRole(role)
           ) || [])
         ) as MemberRole;
 
@@ -119,8 +117,8 @@ class Message {
     return false;
   }
 
-  async delete_msg(): Promise<void> {
-    if (await this.can_delete()) {
+  async deleteMsg(): Promise<void> {
+    if (await this.canDelete()) {
       await this.session.bot.deleteMessage(
         this.session.channelId,
         this.session.messageId
@@ -128,9 +126,3 @@ class Message {
     }
   }
 }
-
-const make_message = (session: Session): Message => {
-  return new Message(session);
-};
-
-export { make_message, Message };

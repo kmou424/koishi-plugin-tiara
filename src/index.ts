@@ -1,5 +1,5 @@
 import { BaseOCR, Config } from "@tiara/config";
-import { PluginContext, makePluginContext } from "@tiara/core/type";
+import { PluginContext } from "@tiara/core/type";
 import { MiniAppMessageHandlerHub } from "@tiara/handler/qq";
 import { Context as KoishiContext } from "koishi";
 
@@ -7,7 +7,7 @@ export * from "@tiara/config";
 export { AppName as name } from "@tiara/config";
 
 export async function apply(koishiCtx: KoishiContext, config: Config) {
-  const ctx = makePluginContext(koishiCtx, config);
+  const ctx = PluginContext(koishiCtx, config);
 
   await init(ctx);
 

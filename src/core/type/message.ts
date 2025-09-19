@@ -13,7 +13,7 @@ export enum MsgPlatform {
 }
 
 export namespace MsgPlatform {
-  export const as_koishi = (platform: MsgPlatform): Array<string> => {
+  export const asKoishi = (platform: MsgPlatform): Array<string> => {
     switch (platform) {
       case MsgPlatform.QQ:
         return ["onebot"];

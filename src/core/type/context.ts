@@ -8,7 +8,7 @@ export type PluginContext = {
   logger: Logger;
 };
 
-export const makePluginContext = (
+export const PluginContext = (
   koishiCtx: KoishiContext,
   cfg: Config
 ): PluginContext => {

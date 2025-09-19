@@ -3,10 +3,10 @@ class TTLCache<T extends Object> {
   private expire: Date;
   private ttl: number;
 
-  private add_seconds(seconds: number) {
+  private addSeconds(seconds: number) {
     this.expire.setSeconds(this.expire.getSeconds() + seconds);
   }
-  private sub_seconds(seconds: number) {
+  private subSeconds(seconds: number) {
     this.expire.setSeconds(this.expire.getSeconds() - seconds);
   }
 
@@ -17,7 +17,7 @@ class TTLCache<T extends Object> {
   ) {
     this.cache = cache;
     this.expire = new Date();
-    this.add_seconds(ttl || 0);
+    this.addSeconds(ttl || 0);
     this.ttl = ttl || 0;
     if (!this.producer && producer) {
       this.producer = producer;
@@ -31,7 +31,7 @@ class TTLCache<T extends Object> {
       if (this.producer) {
         this.cache = await this.producer();
         this.expire = new Date();
-        this.add_seconds(this.ttl || 0);
+        this.addSeconds(this.ttl || 0);
       }
       return this.cache;
     }
@@ -41,32 +41,32 @@ class TTLCache<T extends Object> {
   set(cache: T) {
     this.cache = cache;
     this.expire = new Date();
-    this.add_seconds(this.ttl || 0);
+    this.addSeconds(this.ttl || 0);
   }
 
-  set_with_ttl(cache: T, ttl: number) {
+  setWithTTL(cache: T, ttl: number) {
     this.cache = cache;
     this.expire = new Date();
-    this.add_seconds(ttl);
+    this.addSeconds(ttl);
     this.ttl = ttl;
   }
 
-  set_ttl(ttl: number) {
+  setTTL(ttl: number) {
     this.expire = new Date();
-    this.sub_seconds(this.ttl);
+    this.subSeconds(this.ttl);
     this.ttl = ttl;
-    this.add_seconds(this.ttl);
+    this.addSeconds(this.ttl);
   }
 
   async update() {
     if (this.producer) {
       this.cache = await this.producer();
       this.expire = new Date();
-      this.add_seconds(this.ttl || 0);
+      this.addSeconds(this.ttl || 0);
     }
   }
 
-  is_expired(): boolean {
+  isExpired(): boolean {
     return this.expire < new Date();
   }
 }

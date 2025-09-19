@@ -1,5 +1,5 @@
 import { h } from "koishi";
-import { Message, make_message } from "@tiara/core/protocol";
+import { Message } from "@tiara/core/protocol";
 import {
   HandlerHub,
   MessageHandlerFunc,
@@ -9,25 +9,25 @@ import {
   PluginContext,
 } from "@tiara/core/type";
 import { BilibiliAPI, BilibiliTool } from "@tiara/third-party/bilibili";
-import { format_duration } from "@tiara/util/time";
+import { formatDuration } from "@tiara/util/time";
 import Handlebars from "handlebars";
 
 export const MiniAppMessageHandlerHub: HandlerHub = (ctx: PluginContext) => {
   ctx()
-    .platform(...MsgPlatform.as_koishi(MsgPlatform.QQ))
+    .platform(...MsgPlatform.asKoishi(MsgPlatform.QQ))
     .on("message", (session) => {
-      handlerThis(make_message(session));
+      handlerThis(new Message(session));
     });
 };
 
 const handlerThis: MessageHandlerFunc & {
-  is_miniapp_message: (item: MsgContent) => boolean;
+  isMiniappMessage: (item: MsgContent) => boolean;
 
-  handle_bilibili: (msg: Message, qqdocurl: string) => Promise<void>;
+  handleBilibili: (msg: Message, qqdocurl: string) => Promise<void>;
 } = async (msg: Message) => {
   msg.content.forEach(async (item) => {
     // 小程序消息
-    if (!handlerThis.is_miniapp_message(item)) return;
+    if (!handlerThis.isMiniappMessage(item)) return;
 
     const qqdocurl = item.data?.["meta"]?.["detail_1"]?.["qqdocurl"] as string;
     if (!qqdocurl) return;
@@ -35,7 +35,7 @@ const handlerThis: MessageHandlerFunc & {
     const url = new URL(qqdocurl);
     switch (url.hostname) {
       case "b23.tv":
-        handlerThis.handle_bilibili(msg, qqdocurl);
+        handlerThis.handleBilibili(msg, qqdocurl);
         break;
       default:
         break;
@@ -58,25 +58,25 @@ handlerThis.template = {
   },
 };
 
-handlerThis.is_miniapp_message = (item: MsgContent) => {
+handlerThis.isMiniappMessage = (item: MsgContent) => {
   return (
     item.type === MsgType.Json &&
     (item.data?.["app"] as string).includes("miniapp")
   );
 };
 
-handlerThis.handle_bilibili = async (msg: Message, qqdocurl: string) => {
-  const url = await BilibiliTool.parse_b23url(qqdocurl);
+handlerThis.handleBilibili = async (msg: Message, qqdocurl: string) => {
+  const url = await BilibiliTool.parseB23url(qqdocurl);
   if (!url) {
     return;
   }
-  const bvid = BilibiliTool.get_bv_from_url(url);
-  const video = await BilibiliAPI.get_video_info(bvid);
+  const bvid = BilibiliTool.getBVFromUrl(url);
+  const video = await BilibiliAPI.getVideoInfo(bvid);
 
   await msg.session.send([
     h("img", { src: video.pic }),
     handlerThis.template.render({
-      duration: format_duration(video.duration),
+      duration: formatDuration(video.duration),
       desc_trimmed:
         video.desc.length > 50 ? video.desc.slice(0, 50) + "..." : video.desc,
       url: url,
@@ -86,5 +86,5 @@ handlerThis.handle_bilibili = async (msg: Message, qqdocurl: string) => {
       由 <at id={msg.session.event.member.user?.id} /> 分享
     </>,
   ]);
-  await msg.delete_msg();
+  await msg.deleteMsg();
 };

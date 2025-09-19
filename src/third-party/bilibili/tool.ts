@@ -3,7 +3,7 @@ import axios from "axios";
 const exclude_params = new Set([]);
 
 class BilibiliTool {
-  static async parse_b23url(url: string) {
+  static async parseB23url(url: string) {
     const resp = await axios.get(url);
     const redirect_url = new URL(resp.request.res.responseUrl);
     this.clean_url(redirect_url);
@@ -22,7 +22,7 @@ class BilibiliTool {
     }
   }
 
-  static get_bv_from_url(url: string) {
+  static getBVFromUrl(url: string) {
     // https://www.bilibili.com/video/BV1Qy4y1L76y
     const match = url.match(/BV\w+/);
     return match ? match[0] : null;
