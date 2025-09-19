@@ -1,9 +1,14 @@
+import { PluginContext } from "@tiara/core/type";
 import { TODO } from "@tiara/util/runtime";
 import axios from "axios";
 import { Schema } from "koishi";
 
-type PerdictFunc = (options: OCR.Options) => Promise<string>;
-type PrecheckFunc = (config: OCR.Config) => Promise<boolean>;
+type PerdictFunc = (
+  ctx: PluginContext,
+  options: OCR.Options
+) => Promise<string>;
+
+type PrecheckFunc = (ctx: PluginContext) => Promise<boolean>;
 
 export namespace PaddleOCR {
   export const Enabled = true;
@@ -17,38 +22,35 @@ export namespace PaddleOCR {
     endpoint: Schema.string().description("PaddleOCR 的 API 地址").default(""),
   }).description("PaddleOCR 配置");
 
-  export const predict: PerdictFunc = async (options) => {
+  export const Predict: PerdictFunc = async (ctx, options) => {
     const { type, data } = options;
     const config = options.config as Config;
     const url = new URL(config.endpoint);
     url.pathname = "/ocr/predict";
 
-    const formData: FormData = new FormData();
-    formData.append("type", type);
+    const body: {
+      type: string;
+      data: string;
+    } = {
+      type: type,
+      data: data,
+    };
 
-    switch (type) {
-      case "url":
-        formData.append("image_url", data);
-        break;
-      case "base64":
-        formData.append("base64_str", data);
-        break;
-      case "path":
-        formData.append("image_path", data);
-        break;
-      case "file":
-        formData.append("image", data as Blob);
-        break;
+    try {
+      const resp = await axios.post(url.toString(), body, {
+        timeout: 5000,
+      });
+      return (resp.data.data[0] as object[][])
+        .map((item) => item[1][0])
+        .join("");
+    } catch (error) {
+      ctx.logger.error("OCR predict error:", error);
+      return "";
     }
-
-    const resp = await axios.post(url.toString(), formData, {
-      timeout: 5000,
-    });
-    return (resp.data.data[0] as object[][]).map((item) => item[1][0]).join("");
   };
 
-  export const precheck: PrecheckFunc = async (c) => {
-    const config = c as Config;
+  export const Precheck: PrecheckFunc = async (ctx) => {
+    const config = ctx.cfg as Config;
     const url = new URL(config.endpoint);
     url.pathname = "/ocr/health";
     try {
@@ -57,6 +59,7 @@ export namespace PaddleOCR {
       });
       return resp.status === 200;
     } catch (error) {
+      ctx.logger.error("OCR precheck error:", error);
       return false;
     }
   };
@@ -74,12 +77,12 @@ export namespace TesseractOCR {
     lang: Schema.string().description("语言").default("eng"),
   }).description("Tesseract 配置");
 
-  export const predict: PerdictFunc = async (options) => {
+  export const Predict: PerdictFunc = async (ctx, options) => {
     // TODO: implement Tesseract OCR
     throw TODO;
   };
 
-  export const precheck: PrecheckFunc = async (config) => {
+  export const Precheck: PrecheckFunc = async (ctx) => {
     // TODO: implement Tesseract OCR
     throw TODO;
   };
@@ -112,25 +115,24 @@ export namespace OCR {
 
   export interface Options {
     config: Config;
-    type: "url" | "base64" | "path" | "file";
-    data: string | Blob;
+    type: "url" | "base64" | "path";
+    data: string;
   }
 
-  export const precheck: PrecheckFunc = async (
-    config: Config
-  ): Promise<boolean> => {
-    return await {
-      paddleocr: PaddleOCR.precheck,
-      tesseract: TesseractOCR.precheck,
-    }[config.engine](config);
-  };
+  export const Precheck: PrecheckFunc = async (
+    ctx: PluginContext
+  ): Promise<boolean> =>
+    await {
+      paddleocr: PaddleOCR.Precheck,
+      tesseract: TesseractOCR.Precheck,
+    }[ctx.cfg.engine](ctx);
 
-  export const predict: PerdictFunc = async (
+  export const Predict: PerdictFunc = async (
+    ctx: PluginContext,
     options: Options
-  ): Promise<string> => {
-    return await {
-      paddleocr: PaddleOCR.predict,
-      tesseract: TesseractOCR.predict,
-    }[options.config.engine](options);
-  };
+  ): Promise<string> =>
+    await {
+      paddleocr: PaddleOCR.Predict,
+      tesseract: TesseractOCR.Predict,
+    }[options.config.engine](ctx, options);
 }
