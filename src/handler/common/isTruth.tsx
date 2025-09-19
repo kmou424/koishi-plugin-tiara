@@ -20,9 +20,15 @@ export const IsTruthHandlerHub = (ctx: PluginContext) => {
 function IsTruthCommandHandler(ctx: PluginContext): Command.Action {
   return async (input: CommandHandlerInput) => {
     const elements = h.parse(input.args.join("\n"));
-    let content = (
-      await IsTruthCommandHandler.resolveElements(ctx, elements)
-    ).join("\n");
+    let content: string;
+    try {
+      content = (
+        await IsTruthCommandHandler.resolveElements(ctx, elements)
+      ).join("\n");
+    } catch (error) {
+      input.session.send(`发生错误: 解析输入失败: ${error}`);
+      return;
+    }
     if (content.length === 0) {
       input.session.send("无效的输入");
       return;
@@ -99,11 +105,15 @@ namespace IsTruthCommandHandler {
       case "img":
         const { data } = await ctx().http.file(element.attrs.src);
         const base64 = Buffer.from(data).toString("base64");
-        return await OCR.Predict(ctx, {
-          config: ctx.cfg,
-          type: "base64",
-          data: base64,
-        });
+        try {
+          return await OCR.Predict(ctx, {
+            config: ctx.cfg,
+            type: "base64",
+            data: base64,
+          });
+        } catch (error) {
+          throw new Error(`OCR识别失败: ${error}`);
+        }
       default:
         return "";
     }
