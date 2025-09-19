@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@tiara/*": ["src/*"],
+      "@tiara/config/*": ["src/config/*"],
       "@tiara/core/*": ["src/core/*"],
       "@tiara/handler/*": ["src/handler/*"],
       "@tiara/third-party/*": ["src/third-party/*"],

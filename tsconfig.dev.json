@@ -4,6 +4,7 @@
     "paths": {
       // tiara workspace local aliases for runtime resolution
       "@tiara/*": ["external/tiara/src/*"],
+      "@tiara/config/*": ["external/tiara/config/*"],
       "@tiara/core/*": ["external/tiara/src/core/*"],
       "@tiara/handler/*": ["external/tiara/src/handler/*"],
       "@tiara/third-party/*": ["external/tiara/src/third-party/*"],
