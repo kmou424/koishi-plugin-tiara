@@ -1,6 +1,6 @@
-import { PluginContext } from "../../../core/type";
 import axios, { AxiosError } from "axios";
 import { Schema } from "koishi";
+import { PluginContext } from "../../../core/type";
 import {
   ChatCompletionsFunc,
   ChatCompletionsRequest,
@@ -116,7 +116,7 @@ export namespace xAI {
       resp.usage = axiosResp.data.usage;
     } catch (error) {
       if (error instanceof AxiosError) {
-        switch (error.status) {
+        switch (error.response?.status) {
           case 400:
             resp.error = ErrCode.BadRequest;
             break;

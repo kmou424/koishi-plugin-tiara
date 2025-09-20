@@ -23,6 +23,9 @@ const parseMsgType = (type: string): MsgType => {
 };
 
 const parseMsgContent = (message: Array<Object> | null): Array<MsgContent> => {
+  if (!message) {
+    return [];
+  }
   return message.map((item) => {
     return {
       type: parseMsgType(item["type"]),
