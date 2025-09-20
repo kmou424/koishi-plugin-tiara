@@ -30,7 +30,7 @@ export namespace PaddleOCR {
 
     try {
       const resp = await axios.post(url.toString(), body, {
-        timeout: 5000,
+        timeout: 30 * 1000,
       });
       return (resp.data.data[0] as object[][])
         .map((item) => item[1][0])
