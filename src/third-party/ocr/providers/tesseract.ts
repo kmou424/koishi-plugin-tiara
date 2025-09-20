@@ -1,6 +1,6 @@
-import { TODO } from "../../../util/runtime";
 import { Schema } from "koishi";
-import { PerdictFunc, PrecheckFunc } from "../type";
+import { TODO } from "../../../util/runtime";
+import { PrecheckFunc, PredictFunc } from "../type";
 
 export namespace TesseractOCR {
   export const Enabled = false;
@@ -14,7 +14,7 @@ export namespace TesseractOCR {
     lang: Schema.string().description("语言").default("eng"),
   }).description("Tesseract 配置");
 
-  export const Predict: PerdictFunc = async (ctx, options) => {
+  export const Predict: PredictFunc = async (ctx, options) => {
     // TODO: implement Tesseract OCR
     throw TODO;
   };

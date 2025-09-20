@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Schema } from "koishi";
-import { PerdictFunc, PrecheckFunc } from "../type";
+import { PrecheckFunc, PredictFunc } from "../type";
 
 export namespace PaddleOCR {
   export const Enabled = true;
@@ -14,7 +14,7 @@ export namespace PaddleOCR {
     endpoint: Schema.string().description("PaddleOCR 的 API 地址").default(""),
   }).description("PaddleOCR 配置");
 
-  export const Predict: PerdictFunc = async (ctx, options) => {
+  export const Predict: PredictFunc = async (ctx, options) => {
     const { type, data } = options;
     const config = options.config as Config;
     const url = new URL(config.endpoint);

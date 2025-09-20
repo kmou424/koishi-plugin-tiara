@@ -7,7 +7,7 @@ export interface PredictOptions {
   data: string;
 }
 
-export type PerdictFunc = (
+export type PredictFunc = (
   ctx: PluginContext,
   options: PredictOptions
 ) => Promise<string>;

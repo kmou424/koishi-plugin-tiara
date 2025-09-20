@@ -1,6 +1,6 @@
 import { PluginContext } from "../../core/type";
 import { PaddleOCR, TesseractOCR } from "./providers";
-import { PerdictFunc, PrecheckFunc, PredictOptions } from "./type";
+import { PrecheckFunc, PredictFunc, PredictOptions } from "./type";
 
 export const Precheck: PrecheckFunc = async (
   ctx: PluginContext
@@ -10,7 +10,7 @@ export const Precheck: PrecheckFunc = async (
     tesseract: TesseractOCR.Precheck,
   }[ctx.cfg.engine](ctx);
 
-export const Predict: PerdictFunc = async (
+export const Predict: PredictFunc = async (
   ctx: PluginContext,
   options: PredictOptions
 ): Promise<string> =>
