@@ -9,7 +9,7 @@ import {
   PluginContext,
 } from "../../../../core/type";
 import { BilibiliAPI, BilibiliTool } from "../../../../third-party/bilibili";
-import { formatDuration } from "../../../../util/time";
+import { Time } from "../../../../util/time";
 import Handlebars from "handlebars";
 
 export const MiniAppMessageHandlerProvider: HandlerProvider = (
@@ -72,7 +72,7 @@ namespace MiniAppMessageHandler {
     await msg.session.send([
       h("img", { src: video.pic }),
       template.render({
-        duration: formatDuration(video.duration),
+        duration: Time.FormatDuration(video.duration),
         desc_trimmed:
           video.desc.length > 50 ? video.desc.slice(0, 50) + "..." : video.desc,
         url: url,
