@@ -1,24 +1,24 @@
 import { h } from "koishi";
-import { Message } from "../../core/protocol";
+import { Message } from "../../../../core/protocol";
 import {
   HandlerHub,
+  HandlerProvider,
   MsgContent,
   MsgPlatform,
   MsgType,
   PluginContext,
-} from "../../core/type";
-import { BilibiliAPI, BilibiliTool } from "../../third-party/bilibili";
-import { formatDuration } from "../../util/time";
+} from "../../../../core/type";
+import { BilibiliAPI, BilibiliTool } from "../../../../third-party/bilibili";
+import { formatDuration } from "../../../../util/time";
 import Handlebars from "handlebars";
 
-export const MiniAppMessageHandlerHub: HandlerHub = (ctx: PluginContext) => {
-  ctx()
-    .platform(...MsgPlatform.asKoishi(MsgPlatform.QQ))
-    .on("message", (session) => {
-      MiniAppMessageHandler(new Message(session));
-    });
+export const MiniAppMessageHandlerProvider: HandlerProvider = (
+  ctx: PluginContext
+) => {
+  ctx().on("message", (session) => {
+    MiniAppMessageHandler(new Message(session));
+  });
 };
-
 async function MiniAppMessageHandler(msg: Message) {
   msg.content.forEach(async (item) => {
     // 小程序消息

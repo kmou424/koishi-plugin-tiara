@@ -1,14 +1,18 @@
-import { CommandHandlerInput, PluginContext } from "../../core/type";
+import {
+  CommandHandlerInput,
+  HandlerProvider,
+  PluginContext,
+} from "../../../../core/type";
 import { Command, h } from "koishi";
 
 import LLM, {
   ChatCompletionsRequest,
   ErrCode,
   MessageRole,
-} from "../../third-party/llm";
-import OCR from "../../third-party/ocr";
+} from "../../../../third-party/llm";
+import OCR from "../../../../third-party/ocr";
 
-export const IsTruthHandlerHub = (ctx: PluginContext) => {
+export const IsTruthHandlerProvider: HandlerProvider = (ctx: PluginContext) => {
   ctx()
     .command("istruth", "使用 AI 求证事实")
     .option("question", "-q <附带提问>", {

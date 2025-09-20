@@ -1,9 +1,12 @@
-import { Command, Session } from "koishi";
+import { Command, Context, Session } from "koishi";
+import { Config } from "../../config";
 import { Message } from "../protocol";
 import { Template } from "../template";
 import { PluginContext } from "./context";
 
-export type HandlerHub = (ctx: PluginContext) => void;
+export type HandlerHub = (ctx: Context, config: Config) => void;
+
+export type HandlerProvider = (ctx: PluginContext) => void;
 
 export interface MessageHandlerFunc {
   (msg: Message): Promise<void>;
