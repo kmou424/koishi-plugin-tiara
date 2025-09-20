@@ -3,7 +3,7 @@ import { Config } from "./config";
 
 export interface PredictOptions {
   config: Config;
-  type: "url" | "base64" | "path";
+  type: "url" | "base64";
   data: string;
 }
 
