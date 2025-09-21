@@ -1,9 +1,20 @@
 import { Schema } from "koishi";
 import { OpenAI, OpenAICompatible, xAI } from "./providers";
 
-export interface Config {
+export type ConfigOptions =
+  | xAI.Config
+  | OpenAI.Config
+  | OpenAICompatible.Config;
+
+export const ConfigOptions: Schema<ConfigOptions> = Schema.union([
+  xAI.Config,
+  OpenAI.Config,
+  OpenAICompatible.Config,
+]);
+
+export type Config = {
   provider: "openai" | "openai-compatible" | "xai";
-}
+};
 
 export const Config: Schema<Config> = Schema.object({
   provider: Schema.union([
@@ -15,12 +26,4 @@ export const Config: Schema<Config> = Schema.object({
   ])
     .description("LLM 提供商")
     .default("xai"),
-}).description("AI 提供商配置");
-
-export type ProviderConfigOptions =
-  | xAI.Config
-  | OpenAI.Config
-  | OpenAICompatible.Config;
-
-export const ProviderConfigOptions: Schema<ProviderConfigOptions> =
-  Schema.union([xAI.Config, OpenAI.Config, OpenAICompatible.Config]);
+}).description("LLM 配置");

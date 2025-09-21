@@ -8,8 +8,7 @@ export namespace OpenAI {
 
   export const WebSearchConfig: Schema<WebSearchConfig> = Schema.object({
     webSearch: Schema.const(true).required(),
-  })
-  .hidden();
+  }).hidden();
 
   export type Config = {
     provider: "openai";

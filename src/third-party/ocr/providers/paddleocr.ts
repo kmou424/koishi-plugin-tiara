@@ -11,8 +11,11 @@ export namespace PaddleOCR {
 
   export const Config: Schema<Config> = Schema.object({
     engine: Schema.const("paddleocr"),
-    endpoint: Schema.string().description("PaddleOCR 的 API 地址").default(""),
-  }).description("PaddleOCR 配置");
+    endpoint: Schema.string()
+      .description("PaddleOCR 的 API 地址")
+      .default("")
+      .required(),
+  });
 
   export const Predict: PredictFunc = async (ctx, options) => {
     const { type, data } = options;
@@ -42,7 +45,7 @@ export namespace PaddleOCR {
   };
 
   export const Precheck: PrecheckFunc = async (ctx) => {
-    const config = ctx.cfg as Config;
+    const config = ctx.cfg.ocr as Config;
     const url = new URL(config.endpoint);
     url.pathname = "/ocr/health";
     try {

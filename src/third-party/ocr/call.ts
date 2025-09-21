@@ -8,7 +8,7 @@ export const Precheck: PrecheckFunc = async (
   await {
     paddleocr: PaddleOCR.Precheck,
     tesseract: TesseractOCR.Precheck,
-  }[ctx.cfg.engine](ctx);
+  }[ctx.cfg.ocr.engine](ctx);
 
 export const Predict: PredictFunc = async (
   ctx: PluginContext,

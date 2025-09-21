@@ -63,8 +63,7 @@ export namespace xAI {
         .default("grok-3-mini"),
       webSearch: Schema.boolean()
         .default(false)
-        .description("是否启用网络搜索")
-        .required(),
+        .description("是否启用网络搜索"),
     }),
     Schema.union([
       WebSearchConfig,
@@ -83,7 +82,7 @@ export namespace xAI {
       returnCitations,
       maxSearchResults,
       model,
-    } = ctx.cfg as Config;
+    } = ctx.cfg.llm as Config;
 
     request["model"] = model;
     if (webSearch as boolean) {

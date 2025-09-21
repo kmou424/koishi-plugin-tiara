@@ -4,20 +4,12 @@ import OCR from "../third-party/ocr";
 
 export const AppName = "tiara";
 
-export interface BaseConfig {}
+export type Config = {
+  ocr: OCR.Config | OCR.ConfigOptions;
+  llm: LLM.Config | LLM.ConfigOptions;
+};
 
-export const BaseConfig: Schema<BaseConfig> = Schema.object({}).description(
-  "基础配置"
-);
-
-export type Config =
-  | (OCR.Config & LLM.Config)
-  | (OCR.ConfigOptions & LLM.ProviderConfigOptions);
-
-export const Config: Schema<Config> = Schema.intersect([
-  // BaseConfig,
-  OCR.Config,
-  OCR.ConfigOptions,
-  LLM.Config,
-  LLM.ProviderConfigOptions,
-]);
+export const Config: Schema<Config> = Schema.object({
+  ocr: Schema.intersect([OCR.Config, OCR.ConfigOptions]),
+  llm: Schema.intersect([LLM.Config, LLM.ConfigOptions]),
+});

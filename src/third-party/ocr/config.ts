@@ -1,9 +1,16 @@
 import { Schema } from "koishi";
 import { PaddleOCR, TesseractOCR } from "./providers";
 
-export interface Config {
+export type ConfigOptions = PaddleOCR.Config | TesseractOCR.Config;
+
+export const ConfigOptions: Schema<ConfigOptions> = Schema.union([
+  PaddleOCR.Config,
+  TesseractOCR.Config,
+]);
+
+export type Config = {
   engine: "paddleocr" | "tesseract";
-}
+};
 
 export const Config: Schema<Config> = Schema.object({
   engine: Schema.union([
@@ -16,11 +23,4 @@ export const Config: Schema<Config> = Schema.object({
   ])
     .default("paddleocr")
     .description("OCR 引擎"),
-});
-
-export type ConfigOptions = PaddleOCR.Config | TesseractOCR.Config;
-
-export const ConfigOptions: Schema<ConfigOptions> = Schema.union([
-  PaddleOCR.Config,
-  TesseractOCR.Config,
-]);
+}).description("OCR 配置");

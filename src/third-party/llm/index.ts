@@ -9,9 +9,9 @@ namespace LLM {
 
   export const Config = LLMConfig.Config;
 
-  export type ProviderConfigOptions = LLMConfig.ProviderConfigOptions;
+  export type ConfigOptions = LLMConfig.ConfigOptions;
 
-  export const ProviderConfigOptions = LLMConfig.ProviderConfigOptions;
+  export const ConfigOptions = LLMConfig.ConfigOptions;
 
   export const ChatCompletions: ChatCompletionsFunc =
     LLMGenerate.ChatCompletions;
