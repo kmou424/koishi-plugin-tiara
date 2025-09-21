@@ -111,7 +111,7 @@ namespace IsTruthCommandHandler {
         const base64 = Buffer.from(data).toString("base64");
         try {
           return await OCR.Predict(ctx, {
-            config: ctx.cfg,
+            config: ctx.cfg.ocr,
             type: "base64",
             data: base64,
           });

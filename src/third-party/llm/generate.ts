@@ -12,4 +12,4 @@ export const ChatCompletions: ChatCompletionsFunc = async (
 ): Promise<ChatCompletionsResponse> =>
   await {
     xai: xAI.ChatCompletions,
-  }[ctx.cfg.provider](ctx, options);
+  }[ctx.cfg.llm.provider](ctx, options);
