@@ -12,7 +12,7 @@ import LLM, {
 } from "../../../../third-party/llm";
 import OCR from "../../../../third-party/ocr";
 
-export const IsTruthHandlerProvider: HandlerProvider = (ctx: PluginContext) => {
+const IsTruthHandlerProvider: HandlerProvider = (ctx: PluginContext) => {
   ctx()
     .command("istruth", "使用 AI 求证事实")
     .option("question", "-q <附带提问>", {
@@ -20,6 +20,8 @@ export const IsTruthHandlerProvider: HandlerProvider = (ctx: PluginContext) => {
     })
     .action(IsTruthCommandHandler(ctx));
 };
+
+export default IsTruthHandlerProvider;
 
 function IsTruthCommandHandler(ctx: PluginContext): Command.Action {
   return async (input: CommandHandlerInput) => {

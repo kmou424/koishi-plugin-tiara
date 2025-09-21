@@ -12,13 +12,14 @@ import { BilibiliAPI, BilibiliTool } from "../../../../third-party/bilibili";
 import { Time } from "../../../../util/time";
 import Handlebars from "handlebars";
 
-export const MiniAppMessageHandlerProvider: HandlerProvider = (
-  ctx: PluginContext
-) => {
+const MiniAppMessageHandlerProvider: HandlerProvider = (ctx: PluginContext) => {
   ctx().on("message", (session) => {
     MiniAppMessageHandler(new Message(session));
   });
 };
+
+export default MiniAppMessageHandlerProvider;
+
 async function MiniAppMessageHandler(msg: Message) {
   msg.content.forEach(async (item) => {
     // 小程序消息
