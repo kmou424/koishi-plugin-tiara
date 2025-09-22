@@ -12,11 +12,13 @@ import { BilibiliAPI, BilibiliTool } from "../../../../third-party/bilibili";
 import { Time } from "../../../../util/time";
 import Handlebars from "handlebars";
 
-const MiniAppMessageHandlerProvider: HandlerProvider = (ctx: PluginContext) => {
-  ctx().on("message", (session) => {
-    MiniAppMessageHandler(new Message(session));
-  });
-};
+class MiniAppMessageHandlerProvider extends HandlerProvider {
+  Provide(ctx: PluginContext): void {
+    ctx().on("message", (session) => {
+      MiniAppMessageHandler(new Message(session));
+    });
+  }
+}
 
 export default MiniAppMessageHandlerProvider;
 

@@ -4,9 +4,20 @@ import { Message } from "../protocol";
 import { Template } from "../template";
 import { PluginContext } from "./context";
 
-export type HandlerHub = (ctx: Context, config: Config) => void;
+export abstract class HandlerHub {
+  constructor(private ctx: Context, private config: Config) {
+    const context = this.Context(ctx, config);
+    this.Providers().forEach((p) => p.Provide(context));
+  }
 
-export type HandlerProvider = (ctx: PluginContext) => void;
+  abstract Context(ctx: Context, config: Config): PluginContext;
+
+  abstract Providers(): HandlerProvider[];
+}
+
+export abstract class HandlerProvider {
+  abstract Provide(ctx: PluginContext): void;
+}
 
 export interface MessageHandlerFunc {
   (msg: Message): Promise<void>;

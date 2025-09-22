@@ -12,14 +12,16 @@ import LLM, {
 } from "../../../../third-party/llm";
 import OCR from "../../../../third-party/ocr";
 
-const IsTruthHandlerProvider: HandlerProvider = (ctx: PluginContext) => {
-  ctx()
-    .command("istruth", "使用 AI 求证事实")
-    .option("question", "-q <附带提问>", {
-      type: "string",
-    })
-    .action(IsTruthCommandHandler(ctx));
-};
+class IsTruthHandlerProvider extends HandlerProvider {
+  Provide(ctx: PluginContext): void {
+    ctx()
+      .command("istruth", "使用 AI 求证事实")
+      .option("question", "-q <附带提问>", {
+        type: "string",
+      })
+      .action(IsTruthCommandHandler(ctx));
+  }
+}
 
 export default IsTruthHandlerProvider;
 
