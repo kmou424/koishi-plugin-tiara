@@ -54,8 +54,8 @@ function IsTruthCommandHandler(ctx: PluginContext): Command.Action {
           content: content,
         },
       ],
+      temperature: 0.3,
     };
-    req["temperature"] = 0.3;
     const llmResp = await LLM.ChatCompletions(ctx, req);
     ctx.logger.debug("ChatCompletionsResponse", llmResp);
 
@@ -65,12 +65,12 @@ function IsTruthCommandHandler(ctx: PluginContext): Command.Action {
       );
       return;
     }
-    if (!llmResp.message || llmResp.message.length === 0) {
+    if (!llmResp.messages || llmResp.messages.length === 0) {
       input.session.send("发生错误: 模型返回空结果");
       return;
     }
 
-    const llmRespContent = llmResp.message
+    const llmRespContent = llmResp.messages
       .map((message) => message.content)
       .join("\n");
     input.session.send([

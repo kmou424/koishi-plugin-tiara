@@ -34,14 +34,14 @@ export interface Message {
 
 export interface ChatCompletionsRequest {
   messages: Message[];
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface ChatCompletionsResponse {
-  message: Message[];
+  messages: Message[];
   citations?: string[];
   error?: ErrCodeWithMessage;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export type ChatCompletionsFunc = (

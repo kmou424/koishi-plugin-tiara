@@ -16,7 +16,7 @@ export interface MessageHandlerFunc {
 export interface CommandHandlerInput {
   args: [string, ...string[]];
   next: () => Promise<void>;
-  options: Record<string, any>;
+  options: Record<string, unknown>;
   session: Session;
 }
 

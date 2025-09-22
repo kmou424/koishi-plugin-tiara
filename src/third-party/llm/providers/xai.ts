@@ -93,7 +93,7 @@ export namespace xAI {
       };
     }
     const resp: ChatCompletionsResponse = {
-      message: [],
+      messages: [],
       citations: null,
       error: ErrCode.OK,
     };
@@ -110,7 +110,7 @@ export namespace xAI {
         }
       );
       ctx.logger.debug("xAI ChatCompletionsResponse", axiosResp.data);
-      resp.message = [axiosResp.data.choices[0].message];
+      resp.messages = [axiosResp.data.choices[0].message];
       resp.citations = axiosResp.data.citations;
       resp.usage = axiosResp.data.usage;
     } catch (error) {
