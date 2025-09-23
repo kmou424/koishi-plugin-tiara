@@ -1,12 +1,11 @@
 import { Schema } from "koishi";
-import LLMProviders from ".";
+import { CoreUtil } from "../../../core";
+import { PluginContext } from "../../../core/type";
 import {
   ChatCompletionsRequest,
   ChatCompletionsResponse,
   LLMProvider,
-} from "..";
-import { CoreUtil } from "../../../core";
-import { PluginContext } from "../../../core/type";
+} from "../type";
 
 export interface OpenAIWebSearchConfig {
   webSearch: true;
@@ -84,7 +83,7 @@ export const OpenAICompatibleConfig: Schema<OpenAICompatibleConfig> =
         .description("是否启用网络搜索")
         .disabled()
         .hidden(),
-    }).disabled(!LLMProviders.openai.enabled),
+    }),
     Schema.union([
       OpenAICompatibleWebSearchConfig,
       Schema.object({}) as Schema<OpenAICompatibleWebSearchConfig>,
