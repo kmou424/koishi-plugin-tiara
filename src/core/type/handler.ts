@@ -1,7 +1,5 @@
 import { Command, Context, Session } from "koishi";
 import { Config } from "../../config";
-import { Message } from "../protocol";
-import { Template } from "../template";
 import { PluginContext } from "./context";
 
 export abstract class HandlerHub {
@@ -14,10 +12,9 @@ export abstract class HandlerProvider {
   abstract Provide(ctx: PluginContext): void;
 }
 
-export interface MessageHandlerFunc {
-  (msg: Message): Promise<void>;
-  template: Template;
-}
+export type MessageListener = (session: Session) => Promise<void>;
+
+export type MessageHandlerFunc = (ctx: PluginContext) => MessageListener;
 
 export interface CommandHandlerInput {
   args: [string, ...string[]];
