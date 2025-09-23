@@ -1,25 +1,27 @@
 import axios from "axios";
 import { Schema } from "koishi";
-import { PrecheckFunc, PredictFunc } from "../type";
+import { PluginContext } from "../../../core/type";
+import { OCRProvider, PredictOptions } from "../type";
 
-export namespace PaddleOCR {
-  export const Enabled = true;
-  export interface Config {
-    engine: "paddleocr";
-    endpoint: string;
-  }
+export interface PaddleOCRConfig {
+  engine: "paddleocr";
+  endpoint: string;
+}
 
-  export const Config: Schema<Config> = Schema.object({
-    engine: Schema.const("paddleocr"),
-    endpoint: Schema.string()
-      .description("PaddleOCR 的 API 地址")
-      .default("")
-      .required(),
-  });
+export const PaddleOCRConfig: Schema<PaddleOCRConfig> = Schema.object({
+  engine: Schema.const("paddleocr"),
+  endpoint: Schema.string()
+    .description("PaddleOCR 的 API 地址")
+    .default("")
+    .required(),
+});
 
-  export const Predict: PredictFunc = async (ctx, options) => {
+export class PaddleOCRProvider extends OCRProvider {
+  enabled = true;
+
+  async predict(ctx: PluginContext, options: PredictOptions): Promise<string> {
     const { type, data } = options;
-    const config = options.config as Config;
+    const config = options.config as PaddleOCRConfig;
     const url = new URL(config.endpoint);
     url.pathname = "/ocr/predict";
 
@@ -42,10 +44,10 @@ export namespace PaddleOCR {
       ctx.logger.error("OCR predict error:", error);
       return "";
     }
-  };
+  }
 
-  export const Precheck: PrecheckFunc = async (ctx) => {
-    const config = ctx.cfg.ocr as Config;
+  async precheck(ctx: PluginContext): Promise<boolean> {
+    const config = ctx.cfg.ocr as PaddleOCRConfig;
     const url = new URL(config.endpoint);
     url.pathname = "/ocr/health";
     try {
@@ -57,5 +59,5 @@ export namespace PaddleOCR {
       ctx.logger.error("OCR precheck error:", error);
       return false;
     }
-  };
+  }
 }

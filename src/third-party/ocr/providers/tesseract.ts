@@ -1,26 +1,26 @@
 import { Schema } from "koishi";
 import { CoreUtil } from "../../../core";
-import { PrecheckFunc, PredictFunc } from "../type";
+import { PluginContext } from "../../../core/type";
+import { OCRProvider, PredictOptions } from "../type";
 
-export namespace TesseractOCR {
-  export const Enabled = false;
-  export interface Config {
-    engine: "tesseract";
-    lang: string;
+export interface TesseractOCRConfig {
+  engine: "tesseract";
+  lang: string;
+}
+
+export const TesseractOCRConfig: Schema<TesseractOCRConfig> = Schema.object({
+  engine: Schema.const("tesseract").required(),
+  lang: Schema.string().description("语言").default("eng"),
+});
+
+export class TesseractOCRProvider extends OCRProvider {
+  enabled = false;
+
+  async predict(ctx: PluginContext, options: PredictOptions): Promise<string> {
+    throw CoreUtil.Runtime.TODO;
   }
 
-  export const Config: Schema<Config> = Schema.object({
-    engine: Schema.const("tesseract").required(),
-    lang: Schema.string().description("语言").default("eng"),
-  });
-
-  export const Predict: PredictFunc = async (ctx, options) => {
-    // TODO: implement Tesseract OCR
+  async precheck(ctx: PluginContext): Promise<boolean> {
     throw CoreUtil.Runtime.TODO;
-  };
-
-  export const Precheck: PrecheckFunc = async (ctx) => {
-    // TODO: implement Tesseract OCR
-    throw CoreUtil.Runtime.TODO;
-  };
+  }
 }

@@ -1,5 +1,14 @@
 import { PluginContext } from "../../core/type";
 
+export abstract class LLMProvider {
+  abstract readonly enabled: boolean;
+
+  abstract chatCompletions(
+    ctx: PluginContext,
+    options: ChatCompletionsRequest
+  ): Promise<ChatCompletionsResponse>;
+}
+
 export enum MessageRole {
   User = "user",
   Assistant = "assistant",

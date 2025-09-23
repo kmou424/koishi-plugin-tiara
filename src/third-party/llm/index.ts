@@ -1,20 +1,20 @@
-import * as LLMConfig from "./config";
-import * as LLMGenerate from "./generate";
-import { ChatCompletionsFunc } from "./type";
+import { PluginContext } from "../../core/type";
+import LLMProviders from "./providers";
+import {
+  ChatCompletionsFunc,
+  ChatCompletionsRequest,
+  ChatCompletionsResponse,
+} from "./type";
 
+export * from "./config";
 export * from "./type";
 
-namespace LLM {
-  export type Config = LLMConfig.Config;
-
-  export const Config = LLMConfig.Config;
-
-  export type ConfigOptions = LLMConfig.ConfigOptions;
-
-  export const ConfigOptions = LLMConfig.ConfigOptions;
-
-  export const ChatCompletions: ChatCompletionsFunc =
-    LLMGenerate.ChatCompletions;
+class LLM {
+  public static chatCompletions: ChatCompletionsFunc = async (
+    ctx: PluginContext,
+    options: ChatCompletionsRequest
+  ): Promise<ChatCompletionsResponse> =>
+    await LLMProviders[ctx.cfg.llm.provider].chatCompletions(ctx, options);
 }
 
 export default LLM;

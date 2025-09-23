@@ -1,25 +1,29 @@
 import { Schema } from "koishi";
-import { PaddleOCR, TesseractOCR } from "./providers";
+import OCRProviders, {
+  OCRProviderType,
+  PaddleOCRConfig,
+  TesseractOCRConfig,
+} from "./providers";
 
-export type ConfigOptions = PaddleOCR.Config | TesseractOCR.Config;
+export type OCRConfigOptions = PaddleOCRConfig | TesseractOCRConfig;
 
-export const ConfigOptions: Schema<ConfigOptions> = Schema.union([
-  PaddleOCR.Config,
-  TesseractOCR.Config,
+export const OCRConfigOptions: Schema<OCRConfigOptions> = Schema.union([
+  PaddleOCRConfig,
+  TesseractOCRConfig,
 ]);
 
-export type Config = {
-  engine: "paddleocr" | "tesseract";
+export type OCRConfig = {
+  engine: OCRProviderType;
 };
 
-export const Config: Schema<Config> = Schema.object({
+export const OCRConfig: Schema<OCRConfig> = Schema.object({
   engine: Schema.union([
     Schema.const("paddleocr")
       .description("PaddleOCR")
-      .disabled(!PaddleOCR.Enabled),
+      .disabled(!OCRProviders.paddleocr.enabled),
     Schema.const("tesseract")
       .description("Tesseract")
-      .disabled(!TesseractOCR.Enabled),
+      .disabled(!OCRProviders.tesseract.enabled),
   ])
     .default("paddleocr")
     .description("OCR 引擎"),

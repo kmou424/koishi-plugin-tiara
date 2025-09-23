@@ -1,13 +1,21 @@
-import * as OCRCall from "./call";
-import * as OCRConfig from "./config";
+import { PluginContext } from "../../core/type";
+import { OCRConfig } from "./config";
+import OCRProviders from "./providers";
+import { PrecheckFunc, PredictFunc, PredictOptions } from "./type";
 
-namespace OCR {
-  export type Config = OCRConfig.Config;
-  export type ConfigOptions = OCRConfig.ConfigOptions;
-  export const Config = OCRConfig.Config;
-  export const ConfigOptions = OCRConfig.ConfigOptions;
-  export const Precheck = OCRCall.Precheck;
-  export const Predict = OCRCall.Predict;
+export * from "./config";
+
+class OCR {
+  public static precheck: PrecheckFunc = async (
+    ctx: PluginContext
+  ): Promise<boolean> =>
+    await OCRProviders[(ctx.cfg.ocr as OCRConfig).engine].precheck(ctx);
+
+  public static predict: PredictFunc = async (
+    ctx: PluginContext,
+    options: PredictOptions
+  ): Promise<string> =>
+    await OCRProviders[options.config.engine].predict(ctx, options);
 }
 
 export default OCR;

@@ -58,7 +58,7 @@ function IsTruthCommandHandler(ctx: PluginContext): Command.Action {
       ],
       temperature: 0.3,
     };
-    const llmResp = await LLM.ChatCompletions(ctx, req);
+    const llmResp = await LLM.chatCompletions(ctx, req);
     ctx.logger.debug("ChatCompletionsResponse", llmResp);
 
     if (llmResp.error != ErrCode.OK) {
@@ -114,7 +114,7 @@ namespace IsTruthCommandHandler {
         const { data } = await ctx().http.file(element.attrs.src);
         const base64 = Buffer.from(data).toString("base64");
         try {
-          return await OCR.Predict(ctx, {
+          return await OCR.predict(ctx, {
             config: ctx.cfg.ocr,
             type: "base64",
             data: base64,

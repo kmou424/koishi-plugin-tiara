@@ -1,8 +1,19 @@
 import { PluginContext } from "../../core/type";
-import { Config } from "./config";
+import { OCRConfig } from "./config";
+
+export abstract class OCRProvider {
+  abstract readonly enabled: boolean;
+
+  abstract predict(
+    ctx: PluginContext,
+    options: PredictOptions
+  ): Promise<string>;
+
+  abstract precheck(ctx: PluginContext): Promise<boolean>;
+}
 
 export interface PredictOptions {
-  config: Config;
+  config: OCRConfig;
   type: "url" | "base64";
   data: string;
 }

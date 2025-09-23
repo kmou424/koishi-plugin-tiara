@@ -1,28 +1,34 @@
 import { Schema } from "koishi";
-import { OpenAI, OpenAICompatible, xAI } from "./providers";
+import LLMProviders, {
+  OpenAICompatibleConfig,
+  OpenAIConfig,
+  xAIConfig,
+} from "./providers";
 
-export type ConfigOptions =
-  | xAI.Config
-  | OpenAI.Config
-  | OpenAICompatible.Config;
+export type LLMConfigOptions =
+  | xAIConfig
+  | OpenAIConfig
+  | OpenAICompatibleConfig;
 
-export const ConfigOptions: Schema<ConfigOptions> = Schema.union([
-  xAI.Config,
-  OpenAI.Config,
-  OpenAICompatible.Config,
+export const LLMConfigOptions: Schema<LLMConfigOptions> = Schema.union([
+  xAIConfig,
+  OpenAIConfig,
+  OpenAICompatibleConfig,
 ]);
 
-export type Config = {
+export type LLMConfig = {
   provider: "openai" | "openai-compatible" | "xai";
 };
 
-export const Config: Schema<Config> = Schema.object({
+export const LLMConfig: Schema<LLMConfig> = Schema.object({
   provider: Schema.union([
-    Schema.const("openai").description("OpenAI").disabled(!OpenAI.Enabled),
+    Schema.const("openai")
+      .description("OpenAI")
+      .disabled(!LLMProviders.openai.enabled),
     Schema.const("openai-compatible")
       .description("OpenAI-Compatible")
-      .disabled(!OpenAICompatible.Enabled),
-    Schema.const("xai").description("xAI").disabled(!xAI.Enabled),
+      .disabled(!LLMProviders["openai-compatible"].enabled),
+    Schema.const("xai").description("xAI").disabled(!LLMProviders.xai.enabled),
   ])
     .description("LLM 提供商")
     .default("xai"),

@@ -23,5 +23,5 @@ export async function apply(ctx: Context, config: Config) {
 }
 
 async function initialize(ctx: PluginContext) {
-  await OCR.Precheck(ctx);
+  await OCR.precheck(ctx);
 }
