@@ -13,68 +13,60 @@ const TiaraPropertyCommand = "prop";
 
 class PropertyHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
+    CoreUtil.Permission.AdminContext(ctx).command(
+      `${TiaraCommand}.${TiaraPropertyCommand}`,
+      "Tiara 配置"
+    );
+
     CoreUtil.Permission.AdminContext(ctx)
-      .command(`${TiaraCommand}.${TiaraPropertyCommand}`, "Tiara 配置")
-      .option("write", "-w <key:string> <value:string> 写入", {
-        type: "boolean",
-        fallback: false,
-      })
-      .option("read", "-r <key:string> 读取", {
-        type: "boolean",
-        fallback: false,
-      })
-      .option("list", "-l 列表", {
-        type: "boolean",
-        fallback: false,
-      })
-      .action(this.PropertyCommandHandler(ctx));
+      .command(`${TiaraCommand}.${TiaraPropertyCommand}.list`, "Tiara 配置列表")
+      .action(this.PropertyListCommandHandler(ctx));
+
+    CoreUtil.Permission.AdminContext(ctx)
+      .command(
+        `${TiaraCommand}.${TiaraPropertyCommand}.get <key:string>`,
+        "Tiara 配置读取"
+      )
+      .action(this.PropertyGetCommandHandler(ctx));
+
+    CoreUtil.Permission.AdminContext(ctx)
+      .command(
+        `${TiaraCommand}.${TiaraPropertyCommand}.set <key:string> <value:string>`,
+        "Tiara 配置写入"
+      )
+      .action(this.PropertySetCommandHandler(ctx));
   }
 
-  private PropertyCommandHandler: CommandHandlerFunc = (
+  private PropertyListCommandHandler: CommandHandlerFunc = (
     ctx: PluginContext
   ): Command.Action => {
-    interface Option {
-      write: boolean;
-      read: boolean;
-      list: boolean;
-    }
+    return async (input: CommandHandlerInput) => {
+      await input.session.send(Object.keys(Properties).join(", "));
+    };
+  };
 
-    const Write = async (
-      input: CommandHandlerInput,
-      key: string,
-      value: string
-    ): Promise<void> => {
+  private PropertyGetCommandHandler: CommandHandlerFunc = (
+    ctx: PluginContext
+  ): Command.Action => {
+    return async (input: CommandHandlerInput, key: string) => {
+      if (!Properties[key]) {
+        await input.session.send(`键 "${key}" 不存在`);
+        return;
+      }
+      await input.session.send(`${key} = ${await Properties[key].get()}`);
+    };
+  };
+
+  private PropertySetCommandHandler: CommandHandlerFunc = (
+    ctx: PluginContext
+  ): Command.Action => {
+    return async (input: CommandHandlerInput, key: string, value: string) => {
       if (!Properties[key]) {
         await input.session.send(`键 "${key}" 不存在`);
         return;
       }
       await Properties[key].set(value);
       await input.session.send(`${key} = ${await Properties[key].get()}`);
-    };
-
-    const Read = async (
-      input: CommandHandlerInput,
-      key: string
-    ): Promise<void> => {
-      if (!Properties[key]) {
-        await input.session.send(`键 "${key}" 不存在`);
-        return;
-      }
-      await input.session.send(`${key} = ${await Properties[key].get()}`);
-    };
-
-    return async (input: CommandHandlerInput, key: string, value: string) => {
-      const { write, read, list } = input.options as unknown as Option;
-      if ([write, read, list].filter((val) => val).length > 1) {
-        await input.session.send("请勿同时使用 -w -r -l 选项");
-        return;
-      }
-      switch (true) {
-        case write:
-          return await Write(input, key, value);
-        case read:
-          return await Read(input, key);
-      }
     };
   };
 }
