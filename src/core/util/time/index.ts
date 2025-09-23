@@ -1,5 +1,5 @@
-export namespace Time {
-  export const FormatDuration = (duration: number) => {
+export class Time {
+  public static FormatDuration(duration: number) {
     const hours = Math.floor(duration / 3600);
     const minutes = Math.floor((duration % 3600) / 60);
     const seconds = duration % 60;
@@ -12,5 +12,5 @@ export namespace Time {
       .toString()
       .padStart(2, "0")}`;
     return time;
-  };
+  }
 }

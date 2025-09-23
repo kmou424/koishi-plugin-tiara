@@ -9,8 +9,8 @@ import {
   PluginContext,
 } from "../../../../core/type";
 import { BilibiliAPI, BilibiliTool } from "../../../../third-party/bilibili";
-import { Time } from "../../../../util/time";
 import Handlebars from "handlebars";
+import { CoreUtil } from "../../../../core";
 
 class MiniAppMessageHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
@@ -75,7 +75,7 @@ namespace MiniAppMessageHandler {
     await msg.session.send([
       h("img", { src: video.pic }),
       template.render({
-        duration: Time.FormatDuration(video.duration),
+        duration: CoreUtil.Time.FormatDuration(video.duration),
         desc_trimmed:
           video.desc.length > 50 ? video.desc.slice(0, 50) + "..." : video.desc,
         url: url,

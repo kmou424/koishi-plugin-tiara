@@ -1,5 +1,5 @@
 import { Schema } from "koishi";
-import { TODO } from "../../../util/runtime";
+import { CoreUtil } from "../../../core";
 import { PrecheckFunc, PredictFunc } from "../type";
 
 export namespace TesseractOCR {
@@ -16,11 +16,11 @@ export namespace TesseractOCR {
 
   export const Predict: PredictFunc = async (ctx, options) => {
     // TODO: implement Tesseract OCR
-    throw TODO;
+    throw CoreUtil.Runtime.TODO;
   };
 
   export const Precheck: PrecheckFunc = async (ctx) => {
     // TODO: implement Tesseract OCR
-    throw TODO;
+    throw CoreUtil.Runtime.TODO;
   };
 }
