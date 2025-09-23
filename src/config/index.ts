@@ -2,7 +2,7 @@ import { Schema } from "koishi";
 import LLM from "../third-party/llm";
 import OCR from "../third-party/ocr";
 
-export const AppName = "tiara";
+export const PluginName = "tiara";
 
 export type Config = {
   ocr: OCR.Config | OCR.ConfigOptions;

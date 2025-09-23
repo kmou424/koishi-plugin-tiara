@@ -5,10 +5,10 @@ import IsTruthHandlerProvider from "../providers/command/istruth";
 import MiniAppMessageHandlerProvider from "../providers/message/miniapp";
 
 export class QQHandlerHub extends HandlerHub {
-  Context = (ctx: Context, config: Config) => {
+  Deploy(ctx: Context, config: Config) {
     ctx = ctx.platform(...MsgPlatform.asKoishi(MsgPlatform.QQ));
-    return PluginContext(ctx, config);
-  };
+    this.Providers().forEach((p) => p.Provide(PluginContext(ctx, config)));
+  }
 
   Providers = () => [
     new MiniAppMessageHandlerProvider(),

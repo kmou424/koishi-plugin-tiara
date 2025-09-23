@@ -1,6 +1,6 @@
 import { Context as KoishiContext, Logger } from "koishi";
 import { env } from "process";
-import { AppName, Config } from "../../config";
+import { Config, PluginName } from "../../config";
 
 export type PluginContext = {
   (): KoishiContext;
@@ -14,7 +14,7 @@ export const PluginContext = (
 ): PluginContext => {
   const ctx: PluginContext = (): KoishiContext => koishiCtx;
   ctx.cfg = cfg;
-  ctx.logger = koishiCtx.logger(AppName);
+  ctx.logger = koishiCtx.logger(PluginName);
 
   if (env.NODE_ENV === "development") {
     ctx.logger.level = Logger.DEBUG;

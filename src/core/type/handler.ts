@@ -5,12 +5,7 @@ import { Template } from "../template";
 import { PluginContext } from "./context";
 
 export abstract class HandlerHub {
-  constructor(private ctx: Context, private config: Config) {
-    const context = this.Context(ctx, config);
-    this.Providers().forEach((p) => p.Provide(context));
-  }
-
-  abstract Context(ctx: Context, config: Config): PluginContext;
+  abstract Deploy(ctx: Context, config: Config): void;
 
   abstract Providers(): HandlerProvider[];
 }
