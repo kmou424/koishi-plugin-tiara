@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-tiara",
   "description": "all-in-one plugin for self use",
-  "version": "1.0.2",
+  "version": "1.0.3-beta.1",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
