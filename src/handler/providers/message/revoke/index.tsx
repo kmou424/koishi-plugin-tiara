@@ -55,6 +55,12 @@ class RevokeHandlerProvider extends HandlerProvider {
         return;
       }
 
+      const userId = session.event.user?.id;
+      // 只监听本人撤回的消息
+      if (userId !== operatorId) {
+        return;
+      }
+
       const messageId = session.event.message?.id;
       if (messageId) {
         const cacheKey = createCacheKey(
