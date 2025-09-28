@@ -18,14 +18,14 @@ class RevokeCommandProvider extends HandlerProvider {
 
     CoreUtil.Permission.AdminContext(ctx)
       .command(
-        `${TiaraRevokeCommand}.listen <atMessage:string>`,
+        `${TiaraCommand}.${TiaraRevokeCommand}.listen <atMessage:string>`,
         "监听并补档用户撤回消息"
       )
       .action(this.RevokeListenCommandHandler(ctx));
 
     CoreUtil.Permission.AdminContext(ctx)
       .command(
-        `${TiaraRevokeCommand}.unlisten <atMessage:string>`,
+        `${TiaraCommand}.${TiaraRevokeCommand}.unlisten <atMessage:string>`,
         "停止监听并补档用户撤回消息"
       )
       .action(this.RevokeUnlistenCommandHandler(ctx));
