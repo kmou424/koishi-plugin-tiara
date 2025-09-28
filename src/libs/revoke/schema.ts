@@ -11,11 +11,16 @@ export namespace RevokeListener {
   export const TableName = `${PluginName}.revoke.listener`;
 
   export type Schema = {
+    id: number;
     platform: string;
     userId: string;
   };
 
   export const Schema: Field.Extension<Schema, Types> = {
+    id: {
+      type: "integer",
+      nullable: false,
+    },
     platform: {
       type: "string",
       nullable: false,
@@ -27,10 +32,10 @@ export namespace RevokeListener {
   };
 
   export const SchemaConfig: Model.Config<FlatKeys<Schema, unknown>> = {
-    primary: ["platform", "userId"],
-    unique: ["platform", "userId"],
-    indexes: ["platform", "userId"],
+    primary: ["id"],
+    unique: [["platform", "userId"]],
+    indexes: [["platform", "userId"]],
     foreign: {},
-    autoInc: false,
+    autoInc: true,
   };
 }
