@@ -1,3 +1,6 @@
-import Admin from "./admin";
+import { AdminContext, IsAdmin } from "./admin";
 
-export class Permission extends Admin {}
+export class Permission {
+  public static IsAdmin = IsAdmin;
+  public static AdminContext = AdminContext;
+}
