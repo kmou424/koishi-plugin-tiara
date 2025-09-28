@@ -64,25 +64,19 @@ class RevokeHandlerProvider extends HandlerProvider {
           messageId
         );
 
-        const elements: Element[] = [];
-        if (operatorId) {
-          elements.push(
-            <>
-              <at id={operatorId} /> 撤回了一条消息:
-            </>
-          );
-          elements.push(<br />);
-        }
-
         const cacheMessage = await RevocableMessageCache.load(cacheKey);
         if (!cacheMessage) {
           return;
         }
-        elements.push(...cacheMessage.message);
 
         RevocableMessageCache.delete(cacheKey);
 
-        await session.send(elements);
+        await session.send(
+          <>
+            <at id={operatorId} /> 撤回了一条消息:
+          </>
+        );
+        await session.send(cacheMessage.message);
       }
     };
   };
