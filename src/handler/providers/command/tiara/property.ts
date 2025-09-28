@@ -1,5 +1,4 @@
 import { Command } from "koishi";
-import { TiaraCommand } from ".";
 import { CoreUtil } from "../../../../core";
 import {
   CommandHandlerFunc,
@@ -8,8 +7,7 @@ import {
   PluginContext,
 } from "../../../../core/type";
 import Properties from "../../../../properties";
-
-const TiaraPropertyCommand = "prop";
+import { TiaraCommand, TiaraPropertyCommand } from "./consts";
 
 class PropertyHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {

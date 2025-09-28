@@ -6,10 +6,9 @@ import {
   HandlerProvider,
   PluginContext,
 } from "../../../../core/type";
+import { TiaraCommand } from "./consts";
 import PropertyHandlerProvider from "./property";
 import RevokeCommandProvider from "./revoke";
-
-export const TiaraCommand = "tiara";
 
 class TiaraHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {

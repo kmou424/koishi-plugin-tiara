@@ -7,13 +7,12 @@ import {
   PluginContext,
 } from "../../../../core/type";
 import { RevokeListener } from "../../../../libs/revoke";
-
-const TiaraRevokeCommand = "revoke";
+import { TiaraCommand, TiaraRevokeCommand } from "./consts";
 
 class RevokeCommandProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
     CoreUtil.Permission.AdminContext(ctx).command(
-      TiaraRevokeCommand,
+      `${TiaraCommand}.${TiaraRevokeCommand}`,
       "撤回事件管理器"
     );
 
