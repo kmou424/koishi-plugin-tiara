@@ -7,6 +7,7 @@ import {
   PluginContext,
 } from "../../../../core/type";
 import PropertyHandlerProvider from "./property";
+import RevokeCommandProvider from "./revoke";
 
 export const TiaraCommand = "tiara";
 
@@ -17,6 +18,7 @@ class TiaraHandlerProvider extends HandlerProvider {
       .action(this.TiaraCommandHandler(ctx));
 
     new PropertyHandlerProvider().Provide(ctx);
+    new RevokeCommandProvider().Provide(ctx);
   }
 
   private TiaraCommandHandler: CommandHandlerFunc = (

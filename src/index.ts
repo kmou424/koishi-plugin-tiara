@@ -4,6 +4,7 @@ import Global from "./core/global";
 import { HandlerHub, PluginContext } from "./core/type";
 import { QQHandlerHub } from "./handler/hub";
 import { PluginHandlerHub } from "./handler/hub/plugin";
+import { RevocableMessageCache } from "./libs/revoke";
 import migrate from "./migrate";
 import OCR from "./third-party/ocr";
 
@@ -11,6 +12,10 @@ export * from "./config";
 export { PluginName as name } from "./consts";
 
 const HandlerHubs: HandlerHub[] = [new PluginHandlerHub(), new QQHandlerHub()];
+
+export const inject = {
+  required: ["database"],
+};
 
 export async function apply(ctx: Context, config: Config) {
   Global.Context = PluginContext(ctx, config);
@@ -24,4 +29,5 @@ export async function apply(ctx: Context, config: Config) {
 
 async function initialize(ctx: PluginContext) {
   await OCR.precheck(ctx);
+  RevocableMessageCache.startScanner(ctx);
 }
