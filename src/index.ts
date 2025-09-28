@@ -8,7 +8,7 @@ import migrate from "./migrate";
 import OCR from "./third-party/ocr";
 
 export * from "./config";
-export { PluginName as name } from "./config";
+export { PluginName as name } from "./consts";
 
 const HandlerHubs: HandlerHub[] = [new PluginHandlerHub(), new QQHandlerHub()];
 

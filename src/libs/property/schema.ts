@@ -1,5 +1,5 @@
 import { Field, FlatKeys, Model, Types } from "koishi";
-import { PluginName } from "../../config";
+import { PluginName } from "../../consts";
 
 declare module "koishi" {
   interface Tables {

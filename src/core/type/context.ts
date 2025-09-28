@@ -1,6 +1,7 @@
 import { Context as KoishiContext, Logger } from "koishi";
 import { env } from "process";
-import { Config, PluginName } from "../../config";
+import { Config } from "../../config";
+import { PluginName } from "../../consts";
 
 export type PluginContext = {
   (): KoishiContext;
