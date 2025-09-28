@@ -31,6 +31,25 @@ class RevokeCommandProvider extends HandlerProvider {
       .action(this.RevokeUnlistenCommandHandler(ctx));
   }
 
+  private async ListenerExists(
+    ctx: PluginContext,
+    platform: string,
+    userId: string
+  ): Promise<boolean> {
+    return (
+      (
+        await ctx().database.get(
+          RevokeListener.TableName,
+          {
+            platform,
+            userId,
+          },
+          { limit: 1 }
+        )
+      ).length > 0
+    );
+  }
+
   private RevokeListenCommandHandler: CommandHandlerFunc = (
     ctx: PluginContext
   ): Command.Action => {
@@ -43,12 +62,18 @@ class RevokeCommandProvider extends HandlerProvider {
       if (message.type !== "at") {
         return;
       }
-      await ctx().database.upsert(RevokeListener.TableName, [
-        {
-          platform: input.session.platform,
-          userId: message.attrs.id,
-        },
-      ]);
+
+      if (
+        await this.ListenerExists(ctx, input.session.platform, message.attrs.id)
+      ) {
+        await input.session.send("禁止重复监听");
+        return;
+      }
+
+      await ctx().database.create(RevokeListener.TableName, {
+        platform: input.session.platform,
+        userId: message.attrs.id,
+      });
       await input.session.send([
         <>
           已开始监听 <at id={message.attrs.id} /> 的撤回消息
@@ -69,6 +94,18 @@ class RevokeCommandProvider extends HandlerProvider {
       if (message.type !== "at") {
         return;
       }
+
+      if (
+        !(await this.ListenerExists(
+          ctx,
+          input.session.platform,
+          message.attrs.id
+        ))
+      ) {
+        await input.session.send("未监听该用户");
+        return;
+      }
+
       await ctx().database.remove(RevokeListener.TableName, {
         platform: input.session.platform,
         userId: message.attrs.id,
