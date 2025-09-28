@@ -50,6 +50,11 @@ class RevokeHandlerProvider extends HandlerProvider {
         return;
       }
 
+      const operatorId = session.event.operator?.id;
+      if (operatorId === session.selfId) {
+        return;
+      }
+
       const messageId = session.event.message?.id;
       if (messageId) {
         const cacheKey = createCacheKey(
@@ -60,7 +65,6 @@ class RevokeHandlerProvider extends HandlerProvider {
         );
 
         const elements: Element[] = [];
-        const operatorId = session.event.operator?.id;
         if (operatorId) {
           elements.push(
             <>
