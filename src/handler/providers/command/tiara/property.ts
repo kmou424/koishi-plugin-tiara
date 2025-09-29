@@ -51,7 +51,7 @@ class PropertyHandlerProvider extends HandlerProvider {
         await input.session.send(`键 "${key}" 不存在`);
         return;
       }
-      await input.session.send(`${key} = ${await Properties[key].get()}`);
+      await input.session.send(`${key} = ${await Properties[key].getAsync()}`);
     };
   };
 
@@ -64,7 +64,7 @@ class PropertyHandlerProvider extends HandlerProvider {
         return;
       }
       await Properties[key].set(value);
-      await input.session.send(`${key} = ${await Properties[key].get()}`);
+      await input.session.send(`${key} = ${await Properties[key].getAsync()}`);
     };
   };
 }

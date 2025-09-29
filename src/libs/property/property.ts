@@ -26,6 +26,15 @@ async function setProperty(key: string, value: string): Promise<boolean> {
   return false;
 }
 
+export async function initPropertyMap(
+  map: Record<string, TypedProperty<PropertyValue>>
+) {
+  for (const key in map) {
+    const property = map[key];
+    await property.getAsync();
+  }
+}
+
 const parseFunc: Record<
   "boolean" | "string" | "number" | "object",
   (value: string) => PropertyValue
@@ -49,30 +58,46 @@ const stringifyFunc: Record<
 export class TypedProperty<T extends PropertyValue> {
   private key: string;
   private def: T;
+  private cache: T;
 
   constructor(key: string, def: T) {
     this.key = key;
     this.def = def;
+    this.cache = def;
+  }
+  get(): T {
+    this.getAsync().then((value) => {
+      this.cache = value;
+    });
+    return this.cache;
   }
 
-  default(def: T): this {
-    this.def = def;
-    return this;
-  }
-
-  async get(): Promise<T> {
+  async getAsync(): Promise<T> {
     const value = await getProperty(this.key);
     if (value) {
-      return parseFunc[typeof this.def](value);
+      this.cache = parseFunc[typeof this.def](value);
+      return this.cache;
     }
-    return this.def;
+    return this.cache;
   }
 
-  async set(value: T | string): Promise<boolean> {
+  set(value: T | string): Promise<void> {
     if (typeof value === "string") {
-      return await setProperty(this.key, value);
+      this.cache = parseFunc[typeof this.def](value);
+    } else {
+      this.cache = value;
     }
-    return await setProperty(this.key, stringifyFunc[typeof this.def](value));
+    return this.setAsync(value);
+  }
+
+  async setAsync(value: T | string) {
+    if (typeof value === "string") {
+      this.cache = parseFunc[typeof this.def](value);
+      await setProperty(this.key, value);
+      return;
+    }
+    this.cache = value;
+    await setProperty(this.key, stringifyFunc[typeof this.def](value));
   }
 }
 
@@ -83,19 +108,19 @@ export class Property {
     this.key = key;
   }
 
-  boolean(): TypedProperty<boolean> {
-    return new TypedProperty<boolean>(this.key, false);
+  boolean(def?: boolean): TypedProperty<boolean> {
+    return new TypedProperty<boolean>(this.key, def ?? false);
   }
 
-  string(): TypedProperty<string> {
-    return new TypedProperty<string>(this.key, "");
+  string(def?: string): TypedProperty<string> {
+    return new TypedProperty<string>(this.key, def ?? "");
   }
 
-  number(): TypedProperty<number> {
-    return new TypedProperty<number>(this.key, 0);
+  number(def?: number): TypedProperty<number> {
+    return new TypedProperty<number>(this.key, def ?? 0);
   }
 
-  object(): TypedProperty<object> {
-    return new TypedProperty<object>(this.key, {});
+  object(def?: object): TypedProperty<object> {
+    return new TypedProperty<object>(this.key, def ?? {});
   }
 }
