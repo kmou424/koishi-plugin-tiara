@@ -37,7 +37,12 @@ export const xAIWebSearchConfig: Schema<xAIWebSearchConfig> = Schema.object({
 export type xAIConfig = {
   provider: "xai";
   apiKey: string;
-  model: "grok-3-mini" | "grok-4-0709" | "grok-3";
+  model:
+    | "grok-3-mini"
+    | "grok-4-0709"
+    | "grok-4-fast-non-reasoning"
+    | "grok-4-fast-reasoning"
+    | "grok-3";
   webSearch: boolean;
 } & xAIWebSearchConfig;
 
@@ -52,6 +57,8 @@ export const xAIConfig: Schema<xAIConfig> = Schema.intersect([
     model: Schema.union([
       Schema.const("grok-3-mini"),
       Schema.const("grok-4-0709"),
+      Schema.const("grok-4-fast-non-reasoning"),
+      Schema.const("grok-4-fast-reasoning"),
       Schema.const("grok-3"),
     ])
       .description("xAI 模型")
