@@ -1,14 +1,10 @@
 import { Session } from "koishi";
-import { RevokeListener } from "../../../libs/revoke";
+import { GetRevokeListenerRepository } from "../../../repositories";
 import { PluginContext } from "../../type";
 
 class Revoke {
-  public static async IsListener(
-    ctx: PluginContext,
-    session: Session
-  ): Promise<boolean> {
-    const records = await ctx().database.get(
-      RevokeListener.TableName,
+  public static IsListener(ctx: PluginContext, session: Session): boolean {
+    const records = GetRevokeListenerRepository().get(
       {
         platform: session.platform,
         userId: session.userId,

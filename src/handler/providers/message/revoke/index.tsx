@@ -27,7 +27,7 @@ class RevokeHandlerProvider extends HandlerProvider {
     // QQ 的可撤回时间是两分钟
     const TTL = 60 * 2;
     return async (session: Session) => {
-      if (!(await CoreUtil.Permission.Revoke.IsListener(ctx, session))) {
+      if (!CoreUtil.Permission.Revoke.IsListener(ctx, session)) {
         return;
       }
 
@@ -46,7 +46,7 @@ class RevokeHandlerProvider extends HandlerProvider {
     ctx: PluginContext
   ): MessageListener => {
     return async (session: Session) => {
-      if (!(await CoreUtil.Permission.Revoke.IsListener(ctx, session))) {
+      if (!CoreUtil.Permission.Revoke.IsListener(ctx, session)) {
         return;
       }
 
