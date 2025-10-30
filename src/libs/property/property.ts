@@ -63,11 +63,6 @@ export class TypedProperty<T extends PropertyValue> {
     return this.cache;
   }
 
-  async getAsync(): Promise<T> {
-    // 保持向后兼容，但内部使用同步操作
-    return this.get();
-  }
-
   set(value: T | string): void {
     if (typeof value === "string") {
       this.cache = parseFunc[typeof this.def](value);
@@ -76,11 +71,6 @@ export class TypedProperty<T extends PropertyValue> {
       this.cache = value;
       setProperty(this.key, stringifyFunc[typeof this.def](value));
     }
-  }
-
-  async setAsync(value: T | string): Promise<void> {
-    // 保持向后兼容，但内部使用同步操作
-    this.set(value);
   }
 }
 
