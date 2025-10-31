@@ -3,11 +3,7 @@ import Global from "../core/global";
 import { IRepository } from "../core/orm/type";
 import { PluginContext } from "../core/type";
 import * as Property from "../libs/property";
-
-export interface RepositoryProvider {
-  initialize(ctx: PluginContext): Promise<void>;
-  dispose(ctx: PluginContext): void;
-}
+import { RepositoryProvider } from "./type";
 
 export function GetPropertyRepository(): IRepository<
   Tables[typeof Property.TableName]
