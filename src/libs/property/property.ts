@@ -1,37 +1,26 @@
-import Global from "../../core/global";
-import { TableName } from "./schema";
+import { GetPropertyRepository } from "../../repositories";
 import { PropertyValue } from "./type";
 
-const cache: Record<string, string> = {};
-
-async function getProperty(key: string): Promise<string | null> {
-  if (cache[key]) {
-    return cache[key];
-  }
-  const records = await Global.Context().model.get(TableName, key);
+function getProperty(key: string): string | null {
+  const records = GetPropertyRepository().get({ key });
   if (records && records.length > 0) {
     return records[0].value;
   }
   return null;
 }
 
-async function setProperty(key: string, value: string): Promise<boolean> {
-  const result = await Global.Context().model.upsert(TableName, [
-    { key, value },
-  ]);
-  if (result.modified + result.inserted == 1) {
-    cache[key] = value;
-    return true;
-  }
-  return false;
+function setProperty(key: string, value: string): boolean {
+  const result = GetPropertyRepository().upsert({ key, value });
+  return result.length > 0;
 }
 
-export async function initPropertyMap(
+export function initPropertyMap(
   map: Record<string, TypedProperty<PropertyValue>>
 ) {
+  // 加载所有属性到各自的缓存中
   for (const key in map) {
     const property = map[key];
-    await property.getAsync();
+    property.get(); // 触发加载
   }
 }
 
@@ -65,39 +54,23 @@ export class TypedProperty<T extends PropertyValue> {
     this.def = def;
     this.cache = def;
   }
-  get(): T {
-    this.getAsync().then((value) => {
-      this.cache = value;
-    });
-    return this.cache;
-  }
 
-  async getAsync(): Promise<T> {
-    const value = await getProperty(this.key);
+  get(): T {
+    const value = getProperty(this.key);
     if (value) {
       this.cache = parseFunc[typeof this.def](value);
-      return this.cache;
     }
     return this.cache;
   }
 
-  set(value: T | string): Promise<void> {
+  set(value: T | string): void {
     if (typeof value === "string") {
       this.cache = parseFunc[typeof this.def](value);
+      setProperty(this.key, value);
     } else {
       this.cache = value;
+      setProperty(this.key, stringifyFunc[typeof this.def](value));
     }
-    return this.setAsync(value);
-  }
-
-  async setAsync(value: T | string) {
-    if (typeof value === "string") {
-      this.cache = parseFunc[typeof this.def](value);
-      await setProperty(this.key, value);
-      return;
-    }
-    this.cache = value;
-    await setProperty(this.key, stringifyFunc[typeof this.def](value));
   }
 }
 

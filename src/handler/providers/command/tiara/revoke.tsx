@@ -6,7 +6,7 @@ import {
   HandlerProvider,
   PluginContext,
 } from "../../../../core/type";
-import { RevokeListener } from "../../../../libs/revoke";
+import { GetRevokeListenerRepository } from "../../../../repositories";
 import { TiaraCommand, TiaraRevokeCommand } from "./consts";
 
 class RevokeCommandProvider extends HandlerProvider {
@@ -31,21 +31,18 @@ class RevokeCommandProvider extends HandlerProvider {
       .action(this.RevokeUnlistenCommandHandler(ctx));
   }
 
-  private async ListenerExists(
+  private ListenerExists(
     ctx: PluginContext,
     platform: string,
     userId: string
-  ): Promise<boolean> {
+  ): boolean {
     return (
-      (
-        await ctx().database.get(
-          RevokeListener.TableName,
-          {
-            platform,
-            userId,
-          },
-          { limit: 1 }
-        )
+      GetRevokeListenerRepository().get(
+        {
+          platform,
+          userId,
+        },
+        { limit: 1 }
       ).length > 0
     );
   }
@@ -63,14 +60,12 @@ class RevokeCommandProvider extends HandlerProvider {
         return;
       }
 
-      if (
-        await this.ListenerExists(ctx, input.session.platform, message.attrs.id)
-      ) {
+      if (this.ListenerExists(ctx, input.session.platform, message.attrs.id)) {
         await input.session.send("禁止重复监听");
         return;
       }
 
-      await ctx().database.create(RevokeListener.TableName, {
+      GetRevokeListenerRepository().create({
         platform: input.session.platform,
         userId: message.attrs.id,
       });
@@ -95,18 +90,12 @@ class RevokeCommandProvider extends HandlerProvider {
         return;
       }
 
-      if (
-        !(await this.ListenerExists(
-          ctx,
-          input.session.platform,
-          message.attrs.id
-        ))
-      ) {
+      if (!this.ListenerExists(ctx, input.session.platform, message.attrs.id)) {
         await input.session.send("未监听该用户");
         return;
       }
 
-      await ctx().database.remove(RevokeListener.TableName, {
+      GetRevokeListenerRepository().remove({
         platform: input.session.platform,
         userId: message.attrs.id,
       });
