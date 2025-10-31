@@ -1,5 +1,6 @@
 import { Context } from "koishi";
 import { Config } from "./config";
+import { createPluginContext } from "./core/context";
 import Global from "./core/global";
 import { HandlerHub, PluginContext } from "./core/type";
 import { PluginHandlerHub, QQHandlerHub } from "./handler/hub";
@@ -19,7 +20,7 @@ export const inject = {
 };
 
 export async function apply(ctx: Context, config: Config) {
-  Global.Context = PluginContext(ctx, config);
+  Global.Context = createPluginContext(ctx, config);
   migrate(ctx);
   await initialize(Global.Context);
 
