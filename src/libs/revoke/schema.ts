@@ -1,5 +1,6 @@
 import { Field, FlatKeys, Model, Types } from "koishi";
 import { PluginName } from "../../consts";
+import { SchemaRegistry } from "../../core/schema";
 
 declare module "koishi" {
   interface Tables {
@@ -39,3 +40,9 @@ export namespace RevokeListener {
     autoInc: true,
   };
 }
+
+SchemaRegistry.register({
+  tableName: RevokeListener.TableName,
+  schema: RevokeListener.Schema,
+  config: RevokeListener.SchemaConfig,
+});

@@ -1,5 +1,6 @@
 import { Field, FlatKeys, Model, Types } from "koishi";
 import { PluginName } from "../../consts";
+import { SchemaRegistry } from "../../core/schema";
 
 declare module "koishi" {
   interface Tables {
@@ -31,3 +32,9 @@ export const SchemaConfig: Model.Config<FlatKeys<Schema, unknown>> = {
   foreign: {},
   autoInc: false,
 };
+
+SchemaRegistry.register({
+  tableName: TableName,
+  schema: Schema,
+  config: SchemaConfig,
+});
