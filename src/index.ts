@@ -2,6 +2,7 @@ import { Context } from "koishi";
 import { Config } from "./config";
 import { createPluginContext } from "./core/context";
 import Global from "./core/global";
+import * as Middlewares from "./core/middlewares";
 import { HandlerHub, PluginContext } from "./core/type";
 import { PluginHandlerHub, QQHandlerHub } from "./handler/hub";
 import { initPropertyMap } from "./libs/property";
@@ -24,8 +25,10 @@ export async function apply(ctx: Context, config: Config) {
   migrate(ctx);
   await initialize(Global.Context);
 
+  Middlewares.initialize(Global.Context);
+
   HandlerHubs.forEach((hub) => {
-    hub.Deploy(ctx, config);
+    hub.Deploy(Global.Context, config);
   });
 }
 

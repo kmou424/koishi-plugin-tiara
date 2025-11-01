@@ -1,9 +1,9 @@
-import { Command, Context, Session } from "koishi";
+import { Command, Session } from "koishi";
 import { Config } from "../../config";
 import { PluginContext } from "./context";
 
 export abstract class HandlerHub {
-  abstract Deploy(ctx: Context, config: Config): void;
+  abstract Deploy(ctx: PluginContext, config: Config): void;
 
   abstract Providers(): HandlerProvider[];
 }
