@@ -1,4 +1,4 @@
-import { PluginContext } from "../type";
+import { PluginContext } from "../core/type";
 import { FilterMiddleware } from "./filter";
 
 const Middlewares: ((ctx: PluginContext) => void)[] = [FilterMiddleware];

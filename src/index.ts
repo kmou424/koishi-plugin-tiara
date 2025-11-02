@@ -2,12 +2,12 @@ import { Context } from "koishi";
 import { Config } from "./config";
 import { createPluginContext } from "./core/context";
 import Global from "./core/global";
-import * as Middlewares from "./core/middlewares";
 import { SchemaRegistry } from "./core/schema";
 import { HandlerHub, PluginContext } from "./core/type";
 import { PluginHandlerHub, QQHandlerHub } from "./handler/hub";
 import { initPropertyMap } from "./libs/property";
 import { RevocableMessageCache } from "./libs/revoke";
+import Middleware from "./middleware";
 import Properties from "./properties";
 import OCR from "./third-party/ocr";
 
@@ -29,7 +29,7 @@ export async function apply(ctx: Context, config: Config) {
 
   await initialize(Global.Context);
 
-  Middlewares.initialize(Global.Context);
+  Middleware.initialize(Global.Context);
 
   HandlerHubs.forEach((hub) => {
     hub.Deploy(Global.Context, config);
