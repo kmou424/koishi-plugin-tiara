@@ -1,3 +1,1 @@
-import Errors from "./error";
-
-export class Runtime extends Errors {}
+export const TODO = new Error("not implemented");

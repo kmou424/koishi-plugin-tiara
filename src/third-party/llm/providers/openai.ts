@@ -1,6 +1,6 @@
 import { Schema } from "koishi";
-import { CoreUtil } from "../../../core";
 import { PluginContext } from "../../../core/type";
+import { RuntimeUtil } from "../../../core/util";
 import {
   ChatCompletionsRequest,
   ChatCompletionsResponse,
@@ -48,7 +48,7 @@ export class OpenAIProvider extends LLMProvider {
     ctx: PluginContext,
     request: ChatCompletionsRequest
   ): Promise<ChatCompletionsResponse> {
-    throw CoreUtil.Runtime.TODO;
+    throw RuntimeUtil.TODO;
   }
 }
 
@@ -97,6 +97,6 @@ export class OpenAICompatibleProvider extends LLMProvider {
     ctx: PluginContext,
     request: ChatCompletionsRequest
   ): Promise<ChatCompletionsResponse> {
-    throw CoreUtil.Runtime.TODO;
+    throw RuntimeUtil.TODO;
   }
 }

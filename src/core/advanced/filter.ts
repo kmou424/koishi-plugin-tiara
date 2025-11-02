@@ -7,14 +7,6 @@ import {
   PluginContext,
 } from "../type";
 
-export class FilterFuncs {
-  static registered(registered: boolean): FilterFunc {
-    return async (session: Session) => {
-      return Promise.resolve(registered);
-    };
-  }
-}
-
 export class BaseFilter implements IFilter {
   private callback: FilterCallback | null = null;
   private filterFuncs: FilterFunc[] = [];

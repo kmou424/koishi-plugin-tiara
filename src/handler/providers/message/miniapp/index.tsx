@@ -12,8 +12,8 @@ import {
 } from "../../../../core/type";
 import { BilibiliAPI, BilibiliTool } from "../../../../third-party/bilibili";
 import Handlebars from "handlebars";
-import { CoreUtil } from "../../../../core";
 import { Template } from "../../../../core/template";
+import { TimeUtil } from "../../../../core/util";
 
 class MiniAppMessageHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
@@ -56,7 +56,7 @@ class MiniAppMessageHandlerProvider extends HandlerProvider {
       await msg.session.send([
         h("img", { src: video.pic }),
         template.render({
-          duration: CoreUtil.Time.FormatDuration(video.duration),
+          duration: TimeUtil.formatDuration(video.duration),
           desc_trimmed:
             video.desc.length > 50
               ? video.desc.slice(0, 50) + "..."

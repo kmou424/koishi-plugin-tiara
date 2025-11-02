@@ -1,5 +1,5 @@
 import { Command } from "koishi";
-import { CoreUtil } from "../../../../core";
+import { CoreFilters } from "../../../../core";
 import {
   CommandHandlerFunc,
   CommandHandlerInput,
@@ -12,9 +12,14 @@ import RevokeCommandProvider from "./revoke";
 
 class TiaraHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
-    CoreUtil.Permission.AdminContext(ctx)
-      .command(TiaraCommand, "Tiara 主命令")
-      .action(this.TiaraCommandHandler(ctx));
+    ctx
+      .createFilter()
+      .when(CoreFilters.mustAdmin(ctx))
+      .then(async (ctx: PluginContext) => {
+        ctx()
+          .command(TiaraCommand, "Tiara 主命令")
+          .action(this.TiaraCommandHandler(ctx));
+      });
 
     new PropertyHandlerProvider().Provide(ctx);
     new RevokeCommandProvider().Provide(ctx);

@@ -1,5 +1,5 @@
 import { Command } from "koishi";
-import { CoreUtil } from "../../../../core";
+import { CoreFilters } from "../../../../core";
 import {
   CommandHandlerFunc,
   CommandHandlerInput,
@@ -11,23 +11,24 @@ import { TiaraCommand, TiaraPropertyCommand } from "./consts";
 
 class PropertyHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
-    CoreUtil.Permission.AdminContext(ctx).command(
-      `${TiaraCommand}.${TiaraPropertyCommand}`,
-      "Tiara 配置"
-    );
+    ctx
+      .createFilter()
+      .when(CoreFilters.mustAdmin(ctx))
+      .then(this.registerCommands);
+  }
 
-    CoreUtil.Permission.AdminContext(ctx)
+  private async registerCommands(ctx: PluginContext) {
+    ctx().command(`${TiaraCommand}.${TiaraPropertyCommand}`, "Tiara 配置");
+    ctx()
       .command(`${TiaraCommand}.${TiaraPropertyCommand}.list`, "Tiara 配置列表")
       .action(this.PropertyListCommandHandler(ctx));
-
-    CoreUtil.Permission.AdminContext(ctx)
+    ctx()
       .command(
         `${TiaraCommand}.${TiaraPropertyCommand}.get <key:string>`,
         "Tiara 配置读取"
       )
       .action(this.PropertyGetCommandHandler(ctx));
-
-    CoreUtil.Permission.AdminContext(ctx)
+    ctx()
       .command(
         `${TiaraCommand}.${TiaraPropertyCommand}.set <key:string> <value:string>`,
         "Tiara 配置写入"

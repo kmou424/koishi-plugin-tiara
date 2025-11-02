@@ -1,5 +1,4 @@
 import { Command, h } from "koishi";
-import { CoreUtil } from "../../../../core";
 import {
   CommandHandlerFunc,
   CommandHandlerInput,
@@ -8,22 +7,25 @@ import {
 } from "../../../../core/type";
 import { RevokeListener } from "../../../../libs/revoke";
 import { TiaraCommand, TiaraRevokeCommand } from "./consts";
+import { CoreFilters } from "../../../../core";
 
 class RevokeCommandProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
-    CoreUtil.Permission.AdminContext(ctx).command(
-      `${TiaraCommand}.${TiaraRevokeCommand}`,
-      "撤回事件管理器"
-    );
+    ctx
+      .createFilter()
+      .when(CoreFilters.mustAdmin(ctx))
+      .then(this.registerCommands);
+  }
 
-    CoreUtil.Permission.AdminContext(ctx)
+  private async registerCommands(ctx: PluginContext) {
+    ctx().command(`${TiaraCommand}.${TiaraRevokeCommand}`, "撤回事件管理器");
+    ctx()
       .command(
         `${TiaraCommand}.${TiaraRevokeCommand}.listen <atMessage:string>`,
         "监听并补档用户撤回消息"
       )
       .action(this.RevokeListenCommandHandler(ctx));
-
-    CoreUtil.Permission.AdminContext(ctx)
+    ctx()
       .command(
         `${TiaraCommand}.${TiaraRevokeCommand}.unlisten <atMessage:string>`,
         "停止监听并补档用户撤回消息"

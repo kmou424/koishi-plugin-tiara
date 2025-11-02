@@ -1,3 +1,2 @@
-export * from "./permission";
-export * from "./runtime";
-export * from "./time";
+export * as RuntimeUtil from "./runtime";
+export * as TimeUtil from "./time";
