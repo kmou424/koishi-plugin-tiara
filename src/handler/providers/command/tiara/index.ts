@@ -1,5 +1,5 @@
 import { Command } from "koishi";
-import { CoreFilters } from "../../../../core";
+import { Filter } from "../../../../core";
 import {
   CommandHandlerFunc,
   CommandHandlerInput,
@@ -14,7 +14,7 @@ class TiaraHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
     ctx
       .createFilter()
-      .when(CoreFilters.mustAdmin(ctx))
+      .when(Filter.mustAdmin(ctx))
       .then(async (ctx: PluginContext) => {
         ctx()
           .command(TiaraCommand, "Tiara 主命令")

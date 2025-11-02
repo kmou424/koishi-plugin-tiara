@@ -1,5 +1,5 @@
 import { Command } from "koishi";
-import { CoreFilters } from "../../../../core";
+import { Filter } from "../../../../core";
 import {
   CommandHandlerFunc,
   CommandHandlerInput,
@@ -11,10 +11,7 @@ import { TiaraCommand, TiaraPropertyCommand } from "./consts";
 
 class PropertyHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
-    ctx
-      .createFilter()
-      .when(CoreFilters.mustAdmin(ctx))
-      .then(this.registerCommands);
+    ctx.createFilter().when(Filter.mustAdmin(ctx)).then(this.registerCommands);
   }
 
   private async registerCommands(ctx: PluginContext) {

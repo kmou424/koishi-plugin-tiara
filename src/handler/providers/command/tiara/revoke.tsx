@@ -7,14 +7,11 @@ import {
 } from "../../../../core/type";
 import { RevokeListener } from "../../../../libs/revoke";
 import { TiaraCommand, TiaraRevokeCommand } from "./consts";
-import { CoreFilters } from "../../../../core";
+import { Filter } from "../../../../core";
 
 class RevokeCommandProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
-    ctx
-      .createFilter()
-      .when(CoreFilters.mustAdmin(ctx))
-      .then(this.registerCommands);
+    ctx.createFilter().when(Filter.mustAdmin(ctx)).then(this.registerCommands);
   }
 
   private async registerCommands(ctx: PluginContext) {

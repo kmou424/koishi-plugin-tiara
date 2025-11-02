@@ -1,1 +1,1 @@
-export * from "./filters";
+export * as Filter from "./filter";
