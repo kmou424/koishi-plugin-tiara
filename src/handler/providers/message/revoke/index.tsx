@@ -11,14 +11,19 @@ import {
   createCacheMessage,
   RevocableMessageCache,
 } from "../../../../libs/revoke";
-import { CoreUtil } from "../../../../core";
+import Revoke from "../../../../core/util/permission/revoke";
 
 class RevokeHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
-    ctx()
-      .platform(...MsgPlatform.asKoishi(MsgPlatform.QQ))
-      .on("message", this.QQCacheMsgHandler(ctx));
-    ctx().on("message-deleted", this.MessageDeletedHandler(ctx));
+    ctx
+      .createFilter()
+      .when((session: Session) => Revoke.IsListener(ctx, session))
+      .then(async (ctx: PluginContext) => {
+        ctx()
+          .platform(...MsgPlatform.asKoishi(MsgPlatform.QQ))
+          .on("message", this.QQCacheMsgHandler(ctx));
+        ctx().on("message-deleted", this.MessageDeletedHandler(ctx));
+      });
   }
 
   private QQCacheMsgHandler: MessageHandlerFunc = (
@@ -27,10 +32,6 @@ class RevokeHandlerProvider extends HandlerProvider {
     // QQ 的可撤回时间是两分钟
     const TTL = 60 * 2;
     return async (session: Session) => {
-      if (!(await CoreUtil.Permission.Revoke.IsListener(ctx, session))) {
-        return;
-      }
-
       const cacheKey = createCacheKey(
         session.platform,
         session.selfId,
@@ -46,10 +47,6 @@ class RevokeHandlerProvider extends HandlerProvider {
     ctx: PluginContext
   ): MessageListener => {
     return async (session: Session) => {
-      if (!(await CoreUtil.Permission.Revoke.IsListener(ctx, session))) {
-        return;
-      }
-
       const operatorId = session.event.operator?.id;
       if (operatorId === session.selfId) {
         return;
