@@ -1,5 +1,5 @@
 import { Command } from "koishi";
-import { Filter } from "../../../../core";
+import { Filter } from "../../../../libs";
 import {
   CommandHandlerFunc,
   CommandHandlerInput,

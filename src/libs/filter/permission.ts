@@ -1,5 +1,5 @@
 import { Session } from "koishi";
-import { FilterFunc, PluginContext } from "../type";
+import { FilterFunc, PluginContext } from "../../core/type";
 
 export function mustAdmin(ctx: PluginContext): FilterFunc {
   return async (session: Session) => {

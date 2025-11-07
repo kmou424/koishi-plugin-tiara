@@ -7,7 +7,7 @@ import {
 } from "../../../../core/type";
 import { RevokeListener } from "../../../../libs/revoke";
 import { TiaraCommand, TiaraRevokeCommand } from "./consts";
-import { Filter } from "../../../../core";
+import { Filter } from "../../../../libs";
 
 class RevokeCommandProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {

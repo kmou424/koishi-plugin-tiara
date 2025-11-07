@@ -1,11 +1,11 @@
 import { Command } from "koishi";
-import { Filter } from "../../../../core";
 import {
   CommandHandlerFunc,
   CommandHandlerInput,
   HandlerProvider,
   PluginContext,
 } from "../../../../core/type";
+import { Filter } from "../../../../libs";
 import Properties from "../../../../properties";
 import { TiaraCommand, TiaraPropertyCommand } from "./consts";
 
