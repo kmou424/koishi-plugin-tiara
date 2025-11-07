@@ -1,4 +1,5 @@
 import { Command, h } from "koishi";
+import { Filter } from "../../../../libs";
 import {
   CommandHandlerFunc,
   CommandHandlerInput,
@@ -7,14 +8,13 @@ import {
 } from "../../../../core/type";
 import { RevokeListener } from "../../../../libs/revoke";
 import { TiaraCommand, TiaraRevokeCommand } from "./consts";
-import { Filter } from "../../../../libs";
 
 class RevokeCommandProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
     ctx.createFilter().when(Filter.mustAdmin(ctx)).then(this.registerCommands);
   }
 
-  private async registerCommands(ctx: PluginContext) {
+  private async registerCommands(ctx: PluginContext): Promise<void> {
     ctx().command(`${TiaraCommand}.${TiaraRevokeCommand}`, "撤回事件管理器");
     ctx()
       .command(
