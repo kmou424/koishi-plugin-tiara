@@ -1,6 +1,6 @@
 import { Schema } from "koishi";
 import { PluginContext } from "../../../core/type";
-import { RuntimeUtil } from "../../../core/util";
+import { RuntimeUtil } from "../../../util/runtime";
 import {
   ChatCompletionsRequest,
   ChatCompletionsResponse,

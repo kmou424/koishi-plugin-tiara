@@ -10,14 +10,14 @@ import {
   createCacheKey,
   createCacheMessage,
   RevocableMessageCache,
-} from "../../../../libs/revoke";
-import Revoke from "../../../../core/util/permission/revoke";
+} from "../../../../persistence/revoke";
+import { RevokeUtil } from "../../../../util/permission";
 
 class RevokeHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
     ctx
       .createFilter()
-      .when((session: Session) => Revoke.IsListener(ctx, session))
+      .when((session: Session) => RevokeUtil.IsListener(ctx, session))
       .then(async (ctx: PluginContext) => {
         ctx()
           .platform(...MsgPlatform.asKoishi(MsgPlatform.QQ))

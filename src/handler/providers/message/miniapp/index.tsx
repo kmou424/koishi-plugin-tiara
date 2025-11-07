@@ -13,7 +13,7 @@ import {
 import { BilibiliAPI, BilibiliTool } from "../../../../third-party/bilibili";
 import Handlebars from "handlebars";
 import { Template } from "../../../../core/template";
-import { TimeUtil } from "../../../../core/util";
+import { TimeUtil } from "../../../../util/time";
 
 class MiniAppMessageHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {

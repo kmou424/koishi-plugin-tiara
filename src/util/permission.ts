@@ -1,8 +1,8 @@
 import { Session } from "koishi";
-import { RevokeListener } from "../../../libs/revoke";
-import { PluginContext } from "../../type";
+import { PluginContext } from "../core/type";
+import { RevokeListener } from "../persistence/revoke";
 
-class Revoke {
+export class RevokeUtil {
   public static async IsListener(
     ctx: PluginContext,
     session: Session
@@ -20,5 +20,3 @@ class Revoke {
     return records.length > 0;
   }
 }
-
-export default Revoke;

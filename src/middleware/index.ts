@@ -1,3 +1,12 @@
-import * as Middleware from "./init";
+import { PluginContext } from "../core/type";
+import { FilterMiddleware } from "../filter";
 
-export default Middleware;
+const Middlewares: ((ctx: PluginContext) => void)[] = [FilterMiddleware];
+
+export const initialize = (ctx: PluginContext) => {
+  Middlewares.forEach((registerMiddleware) => registerMiddleware(ctx));
+};
+
+export default {
+  initialize,
+};

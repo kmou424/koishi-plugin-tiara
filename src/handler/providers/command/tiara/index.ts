@@ -1,11 +1,11 @@
 import { Command } from "koishi";
-import { Filter } from "../../../../libs";
 import {
   CommandHandlerFunc,
   CommandHandlerInput,
   HandlerProvider,
   PluginContext,
 } from "../../../../core/type";
+import { PermissionFilter } from "../../../../filter";
 import { TiaraCommand } from "./consts";
 import PropertyHandlerProvider from "./property";
 import RevokeCommandProvider from "./revoke";
@@ -14,7 +14,7 @@ class TiaraHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
     ctx
       .createFilter()
-      .when(Filter.mustAdmin(ctx))
+      .when(PermissionFilter.mustAdmin(ctx))
       .then(async (ctx: PluginContext) => {
         ctx()
           .command(TiaraCommand, "Tiara 主命令")

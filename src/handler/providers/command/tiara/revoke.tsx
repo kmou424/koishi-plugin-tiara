@@ -1,17 +1,20 @@
 import { Command, h } from "koishi";
-import { Filter } from "../../../../libs";
 import {
   CommandHandlerFunc,
   CommandHandlerInput,
   HandlerProvider,
   PluginContext,
 } from "../../../../core/type";
-import { RevokeListener } from "../../../../libs/revoke";
+import { RevokeListener } from "../../../../persistence/revoke";
 import { TiaraCommand, TiaraRevokeCommand } from "./consts";
+import { PermissionFilter } from "../../../../filter";
 
 class RevokeCommandProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
-    ctx.createFilter().when(Filter.mustAdmin(ctx)).then(this.registerCommands);
+    ctx
+      .createFilter()
+      .when(PermissionFilter.mustAdmin(ctx))
+      .then(this.registerCommands);
   }
 
   private async registerCommands(ctx: PluginContext): Promise<void> {

@@ -4,10 +4,10 @@ import { createPluginContext } from "./core/context";
 import Global from "./core/global";
 import { HandlerHub, PluginContext } from "./core/type";
 import { PluginHandlerHub, QQHandlerHub } from "./handler/hub";
-import { initPropertyMap } from "./libs/property";
-import { RevocableMessageCache } from "./libs/revoke";
 import Middleware from "./middleware";
 import migrate from "./migrate";
+import { initPropertyMap } from "./persistence/property";
+import { RevocableMessageCache } from "./persistence/revoke";
 import Properties from "./properties";
 import OCR from "./third-party/ocr";
 
