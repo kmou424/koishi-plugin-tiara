@@ -1,4 +1,4 @@
-import { PluginContext } from "../core/type";
+import { PluginContext } from "../../core/type";
 
 import { FilterMiddleware } from "./filter";
 import { UserMiddleware } from "./user";

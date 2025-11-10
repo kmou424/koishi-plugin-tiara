@@ -1,10 +1,10 @@
 import { Context } from "koishi";
 import { SchemaRegistry } from "./core/schema";
 
-import "./persistence/platform-user";
-import "./persistence/property";
-import "./persistence/revoke";
-import "./persistence/user";
+import "./packages/persistence/platform-user";
+import "./packages/persistence/property";
+import "./packages/persistence/revoke";
+import "./packages/persistence/user";
 
 export default function migrate(ctx: Context): void {
   SchemaRegistry.migrate(ctx);

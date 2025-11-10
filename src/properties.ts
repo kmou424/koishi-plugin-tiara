@@ -1,4 +1,4 @@
-import { PropertyValue, TypedProperty } from "./persistence/property";
+import { PropertyValue, TypedProperty } from "./packages/persistence/property";
 
 const Properties: Record<string, TypedProperty<PropertyValue>> = {};
 

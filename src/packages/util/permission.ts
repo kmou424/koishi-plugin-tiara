@@ -1,5 +1,5 @@
 import { Session } from "koishi";
-import { FilterFunc, PluginContext } from "../core/type";
+import { FilterFunc, PluginContext } from "../../core/type";
 import { RevokeListener } from "../persistence/revoke";
 
 export class PermissionFilter {

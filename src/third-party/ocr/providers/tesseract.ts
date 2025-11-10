@@ -1,6 +1,6 @@
 import { Schema } from "koishi";
 import { PluginContext } from "../../../core/type";
-import { RuntimeUtil } from "../../../util/runtime";
+import { RuntimeUtil } from "../../../packages/util/runtime";
 import { OCRProvider, PredictOptions } from "../type";
 
 export interface TesseractOCRConfig {

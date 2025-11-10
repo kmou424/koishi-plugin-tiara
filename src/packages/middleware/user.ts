@@ -1,5 +1,5 @@
 import { Session } from "koishi";
-import { PluginContext } from "../core/type";
+import { PluginContext } from "../../core/type";
 
 export const UserMiddleware = (ctx: PluginContext) => {
   ctx().middleware(async (session: Session, next) => {

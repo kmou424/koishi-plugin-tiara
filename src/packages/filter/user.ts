@@ -1,6 +1,6 @@
 import { Session } from "koishi";
-import Global from "../core/global";
-import { FilterFunc } from "../core/type";
+import Global from "../../core/global";
+import { FilterFunc } from "../../core/type";
 import { PlatformUser } from "../persistence/platform-user";
 import { User } from "../persistence/user";
 

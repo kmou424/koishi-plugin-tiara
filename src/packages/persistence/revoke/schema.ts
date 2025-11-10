@@ -1,6 +1,6 @@
 import { Field, FlatKeys, Model, Types } from "koishi";
-import { PluginName } from "../../consts";
-import { SchemaRegistry } from "../../core/schema";
+import { PluginName } from "../../../consts";
+import { SchemaRegistry } from "../../../core/schema";
 
 declare module "koishi" {
   interface Tables {

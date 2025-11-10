@@ -5,7 +5,7 @@ import {
   HandlerProvider,
   PluginContext,
 } from "../../../../core/type";
-import { PermissionFilter } from "../../../../util/permission";
+import { PermissionFilter } from "../../../../packages/util/permission";
 import { TiaraCommand } from "./consts";
 import PropertyHandlerProvider from "./property";
 import RevokeCommandProvider from "./revoke";

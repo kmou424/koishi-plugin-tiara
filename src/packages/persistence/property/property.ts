@@ -1,4 +1,4 @@
-import Global from "../../core/global";
+import Global from "../../../core/global";
 import { TableName } from "./schema";
 import { PropertyValue } from "./type";
 

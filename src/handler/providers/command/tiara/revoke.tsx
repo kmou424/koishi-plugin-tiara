@@ -5,9 +5,9 @@ import {
   HandlerProvider,
   PluginContext,
 } from "../../../../core/type";
-import { RevokeListener } from "../../../../persistence/revoke";
+import { RevokeListener } from "../../../../packages/persistence/revoke";
 import { TiaraCommand, TiaraRevokeCommand } from "./consts";
-import { PermissionFilter } from "../../../../util/permission";
+import { PermissionFilter } from "../../../../packages/util/permission";
 
 class RevokeCommandProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {

@@ -1,5 +1,5 @@
-import TTLCache from "../../core/cache/ttl_cache";
-import { PluginContext } from "../../core/type";
+import TTLCache from "../../../core/cache/ttl_cache";
+import { PluginContext } from "../../../core/type";
 import { CacheKey, CacheMessage } from "./type";
 
 export class RevocableMessageCache {

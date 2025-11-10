@@ -1,4 +1,4 @@
-import Global from "../../core/global";
+import Global from "../../../core/global";
 import { User } from "./schema";
 
 export class UserQueries {

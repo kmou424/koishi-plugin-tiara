@@ -10,8 +10,8 @@ import {
   createCacheKey,
   createCacheMessage,
   RevocableMessageCache,
-} from "../../../../persistence/revoke";
-import { RevokeUtil } from "../../../../util/permission";
+} from "../../../../packages/persistence/revoke";
+import { RevokeUtil } from "../../../../packages/util/permission";
 
 class RevokeHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
