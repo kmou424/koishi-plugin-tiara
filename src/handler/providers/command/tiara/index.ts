@@ -19,10 +19,10 @@ class TiaraHandlerProvider extends HandlerProvider {
         ctx()
           .command(TiaraCommand, "Tiara 主命令")
           .action(this.TiaraCommandHandler(ctx));
-      });
 
-    new PropertyHandlerProvider().Provide(ctx);
-    new RevokeCommandProvider().Provide(ctx);
+        new PropertyHandlerProvider().Provide(ctx);
+        new RevokeCommandProvider().Provide(ctx);
+      });
   }
 
   private TiaraCommandHandler: CommandHandlerFunc = (

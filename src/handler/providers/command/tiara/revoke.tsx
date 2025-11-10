@@ -7,17 +7,9 @@ import {
 } from "../../../../core/type";
 import { RevokeListener } from "../../../../packages/persistence/revoke";
 import { TiaraCommand, TiaraRevokeCommand } from "./consts";
-import { PermissionFilter } from "../../../../packages/util/permission";
 
 class RevokeCommandProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
-    ctx
-      .createFilter()
-      .when(PermissionFilter.mustAdmin(ctx))
-      .then(this.registerCommands);
-  }
-
-  private async registerCommands(ctx: PluginContext): Promise<void> {
     ctx().command(`${TiaraCommand}.${TiaraRevokeCommand}`, "撤回事件管理器");
     ctx()
       .command(

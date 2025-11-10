@@ -5,19 +5,11 @@ import {
   HandlerProvider,
   PluginContext,
 } from "../../../../core/type";
-import { PermissionFilter } from "../../../../packages/util/permission";
 import Properties from "../../../../properties";
 import { TiaraCommand, TiaraPropertyCommand } from "./consts";
 
 class PropertyHandlerProvider extends HandlerProvider {
   Provide(ctx: PluginContext): void {
-    ctx
-      .createFilter()
-      .when(PermissionFilter.mustAdmin(ctx))
-      .then(this.registerCommands);
-  }
-
-  private async registerCommands(ctx: PluginContext) {
     ctx().command(`${TiaraCommand}.${TiaraPropertyCommand}`, "Tiara 配置");
     ctx()
       .command(`${TiaraCommand}.${TiaraPropertyCommand}.list`, "Tiara 配置列表")
