@@ -5,7 +5,7 @@ import {
   HandlerProvider,
   PluginContext,
 } from "../../../../core/type";
-import { PermissionFilter } from "../../../../filter";
+import { PermissionFilter } from "../../../../util/permission";
 import Properties from "../../../../properties";
 import { TiaraCommand, TiaraPropertyCommand } from "./consts";
 

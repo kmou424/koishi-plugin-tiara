@@ -1,6 +1,18 @@
 import { Session } from "koishi";
-import { PluginContext } from "../core/type";
+import { FilterFunc, PluginContext } from "../core/type";
 import { RevokeListener } from "../persistence/revoke";
+
+export class PermissionFilter {
+  public static mustAdmin(ctx: PluginContext): FilterFunc {
+    return async (session: Session) => {
+      const roles = ctx.cfg.admins;
+      return roles.some(
+        (role) =>
+          role.platform === session.platform && role.id === session.userId
+      );
+    };
+  }
+}
 
 export class RevokeUtil {
   public static async IsListener(
