@@ -7,6 +7,7 @@ export type PluginContext = {
   cfg: Config;
   logger: Logger;
   filters: Filter[];
+  uid: number | null;
 
   createFilter: () => Filter;
   override: (overrideCtx: KoishiContext) => void;

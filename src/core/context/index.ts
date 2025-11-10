@@ -14,6 +14,7 @@ export const createPluginContext = (
   ctx.cfg = cfg;
   ctx.logger = koishiCtx.logger(PluginName);
   ctx.filters = [];
+  ctx.uid = null;
 
   if (env.NODE_ENV === "development") {
     ctx.logger.level = Logger.DEBUG;
