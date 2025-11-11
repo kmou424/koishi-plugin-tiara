@@ -1,5 +1,11 @@
 export type Result<T> = {
   err: Error | null;
+
+  unwrap: () => T;
+  unwrapOr: (defaultValue: T) => T;
+
+  isOk: () => boolean;
+  isErr: () => boolean;
 } & Omit<Record<string, T | null>, "err">;
 
 const dataKey = "data";
@@ -13,7 +19,7 @@ export const Result = <T>(data: T | null, err: Error | null): Result<T> => {
     err,
   };
 
-  return new Proxy(base, {
+  const proxy = new Proxy(base, {
     get(target, prop: string | symbol) {
       if (prop === "err") {
         return target.err;
@@ -53,4 +59,25 @@ export const Result = <T>(data: T | null, err: Error | null): Result<T> => {
       return undefined;
     },
   }) as unknown as Result<T>;
+
+  proxy.unwrap = () => {
+    if (proxy.err) {
+      throw proxy.err;
+    }
+    return proxy.data!;
+  };
+  proxy.unwrapOr = (defaultValue: T) => {
+    if (proxy.err) {
+      return defaultValue;
+    }
+    return proxy.data!;
+  };
+  proxy.isOk = () => {
+    return proxy.err === null;
+  };
+  proxy.isErr = () => {
+    return proxy.err !== null;
+  };
+
+  return proxy;
 };
