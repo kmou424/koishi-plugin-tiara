@@ -12,9 +12,16 @@ declare module "koishi" {
 export namespace User {
   export const TableName = `${PluginName}.user`;
 
+  export enum ACLs {
+    Guest = 0,
+    User = 1,
+    Admin = 999,
+  }
+
   export type Schema = {
     uid: number;
     bindId: number;
+    acl: ACLs;
   };
 
   export const Schema: Field.Extension<Schema, Types> = {
@@ -26,6 +33,11 @@ export namespace User {
     bindId: {
       type: "integer",
       nullable: false,
+    },
+    acl: {
+      type: "integer",
+      nullable: false,
+      initial: ACLs.Guest,
     },
   };
 

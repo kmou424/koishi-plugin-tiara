@@ -24,4 +24,18 @@ export class PlatformUserQueries {
     }
     return platformUser[0];
   }
+
+  public static async create(
+    platformUser: PlatformUser.Schema
+  ): Promise<PlatformUser.Schema> {
+    delete platformUser.id;
+    const inserted = await Global.Context().model.create(
+      PlatformUser.TableName,
+      platformUser
+    );
+    if (inserted) {
+      return platformUser;
+    }
+    return null;
+  }
 }
