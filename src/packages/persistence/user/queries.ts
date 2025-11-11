@@ -1,5 +1,6 @@
 import Global from "../../../core/global";
 import { Result } from "../../../core/type";
+import { RuntimeUtil } from "../../util/runtime";
 import { User } from "./schema";
 
 export class UserQueries {
@@ -17,7 +18,7 @@ export class UserQueries {
       }
     );
     if (user.length === 0) {
-      return Result(null, new Error("user not found"));
+      return Result(null, RuntimeUtil.NotFound);
     }
     return Result(user[0], null);
   }

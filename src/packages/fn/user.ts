@@ -6,6 +6,7 @@ import {
 } from "../persistence/platform-user";
 import { UserQueries } from "../persistence/user";
 import { User } from "../persistence/user/schema";
+import { RuntimeUtil } from "../util/runtime";
 
 export class UserFn {
   public static async findBindUser(
@@ -15,8 +16,11 @@ export class UserFn {
       session.platform,
       session.userId
     );
-    if (err) {
+    if (err && err !== RuntimeUtil.NotFound) {
       return Result(null, err);
+    }
+    if (!platformUser) {
+      return Result(null, RuntimeUtil.NotFound);
     }
     return await UserQueries.findOne(platformUser.id);
   }
@@ -33,7 +37,10 @@ export class UserFn {
       platform,
       userId
     ));
-    if (!err) {
+    if (err && err !== RuntimeUtil.NotFound) {
+      return Result(null, err);
+    }
+    if (platformUser) {
       if ((await UserQueries.findOne(platformUser.id)).isOk()) {
         return Result(null, new Error("user already exists"));
       }

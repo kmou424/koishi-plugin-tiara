@@ -1,5 +1,6 @@
 import Global from "../../../core/global";
 import { Result } from "../../../core/type";
+import { RuntimeUtil } from "../../util/runtime";
 import { PlatformUser } from "./schema";
 
 export class PlatformUserQueries {
@@ -21,7 +22,7 @@ export class PlatformUserQueries {
       }
     );
     if (platformUser.length === 0) {
-      return Result(null, new Error("platform user not found"));
+      return Result(null, RuntimeUtil.NotFound);
     }
     return Result(platformUser[0], null);
   }
