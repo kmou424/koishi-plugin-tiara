@@ -1,9 +1,10 @@
-import { Session } from "koishi";
-import { PluginContext } from "../../core/type";
+import { Next, Session } from "koishi";
+import { MiddlewareFunc, PluginContext } from "../../core/type";
 import { UserFn } from "../fn/user";
 
-export const UserMiddleware = (ctx: PluginContext) => {
-  ctx().middleware(async (session: Session, next) => {
+export const UserMiddleware =
+  (ctx: PluginContext): MiddlewareFunc =>
+  async (session: Session, next: Next) => {
     const { platform, userId } = session;
     const { user, err } = await UserFn.findBindUser(session);
     if (!err) {
@@ -16,5 +17,4 @@ export const UserMiddleware = (ctx: PluginContext) => {
     }
 
     return await next();
-  });
-};
+  };

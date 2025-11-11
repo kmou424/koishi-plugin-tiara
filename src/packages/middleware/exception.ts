@@ -1,8 +1,9 @@
-import { Session } from "koishi";
-import { PluginContext } from "../../core/type";
+import { Next, Session } from "koishi";
+import { MiddlewareFunc, PluginContext } from "../../core/type";
 
-export const ExceptionMiddleware = (ctx: PluginContext) => {
-  ctx().middleware(async (session: Session, next) => {
+export const ExceptionMiddleware =
+  (ctx: PluginContext): MiddlewareFunc =>
+  async (session: Session, next: Next) => {
     try {
       return await next();
     } catch (error: unknown) {
@@ -12,5 +13,4 @@ export const ExceptionMiddleware = (ctx: PluginContext) => {
         await session.send(`发生未知错误: ${error}`);
       }
     }
-  });
-};
+  };
