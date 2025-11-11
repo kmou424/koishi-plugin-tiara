@@ -6,9 +6,7 @@ import { HandlerHub, PluginContext } from "./core/type";
 import { PluginHandlerHub, QQHandlerHub } from "./handler/hub";
 import migrate from "./migrate";
 import Middleware from "./packages/middleware";
-import { initPropertyMap } from "./packages/persistence/property";
 import { RevocableMessageCache } from "./packages/persistence/revoke";
-import Properties from "./properties";
 import OCR from "./third-party/ocr";
 
 export * from "./config";
@@ -35,5 +33,4 @@ export async function apply(ctx: Context, config: Config) {
 async function initialize(ctx: PluginContext) {
   await OCR.precheck(ctx);
   RevocableMessageCache.startScanner(ctx);
-  await initPropertyMap(Properties);
 }
