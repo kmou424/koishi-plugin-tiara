@@ -6,6 +6,7 @@ import {
 } from "../persistence/platform-user";
 import { UserQueries } from "../persistence/user";
 import { User } from "../persistence/user/schema";
+import { UserProperties } from "../properties/user";
 import { RuntimeUtil } from "../util/runtime";
 
 export class UserFn {
@@ -57,15 +58,29 @@ export class UserFn {
       }
     }
 
-    let user: User.Schema | null = null;
-    ({ user, err } = await UserQueries.create({
-      bindId: platformUser.id,
-      acl,
-    }));
-    if (err) {
-      return Result(null, new Error(`failed to create user: ${err.message}`));
-    }
+    return await UserProperties.AutoIncUid.mutex()
+      .acquire()
+      .then(async (release): Promise<Result<User.Schema>> => {
+        const uid = (await UserProperties.AutoIncUid.getAsync()) + 1;
 
-    return Result(user, null);
+        let user: User.Schema | null = null;
+        ({ user, err } = await UserQueries.create({
+          uid: uid,
+          bindId: platformUser.id,
+          acl,
+        }));
+
+        if (err) {
+          release();
+          return Result(
+            null,
+            new Error(`failed to create user: ${err.message}`)
+          );
+        }
+        await UserProperties.AutoIncUid.setAsync(uid);
+
+        release();
+        return Result(user, null);
+      });
   }
 }

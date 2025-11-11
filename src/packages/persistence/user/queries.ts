@@ -23,9 +23,7 @@ export class UserQueries {
     return Result(user[0], null);
   }
 
-  public static async create(
-    user: Omit<User.Schema, "uid">
-  ): Promise<Result<User.Schema>> {
+  public static async create(user: User.Schema): Promise<Result<User.Schema>> {
     const inserted = await Global.Context().model.create(User.TableName, user);
     if (inserted) {
       return Result(inserted, null);

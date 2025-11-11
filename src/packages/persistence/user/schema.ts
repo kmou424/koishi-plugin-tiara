@@ -28,7 +28,6 @@ export namespace User {
     uid: {
       type: "integer",
       nullable: false,
-      initial: 100001,
     },
     bindId: {
       type: "integer",

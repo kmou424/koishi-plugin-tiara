@@ -1,3 +1,4 @@
+import { Mutex } from "async-mutex";
 import Global from "../../../core/global";
 import { TableName } from "./schema";
 import { PropertyValue } from "./type";
@@ -59,12 +60,18 @@ export class TypedProperty<T extends PropertyValue> {
   private key: string;
   private def: T;
   private cache: T;
+  private lock: Mutex;
 
   constructor(key: string, def: T) {
     this.key = key;
     this.def = def;
     this.cache = def;
   }
+
+  mutex(): Mutex {
+    return this.lock ?? (this.lock = new Mutex());
+  }
+
   get(): T {
     this.getAsync().then((value) => {
       this.cache = value;
