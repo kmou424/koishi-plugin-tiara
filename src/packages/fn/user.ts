@@ -1,21 +1,24 @@
 import { Session } from "koishi";
 import { Result } from "../../core/type";
-import { PlatformUserQueries } from "../persistence/platform-user";
+import {
+  PlatformUser,
+  PlatformUserQueries,
+} from "../persistence/platform-user";
 import { UserQueries } from "../persistence/user";
 import { User } from "../persistence/user/schema";
 
 export class UserFn {
   public static async findBindUser(
     session: Session
-  ): Promise<User.Schema | null> {
-    const platformUser = await PlatformUserQueries.findOne(
+  ): Promise<Result<User.Schema>> {
+    const { platformUser, err } = await PlatformUserQueries.findOne(
       session.platform,
       session.userId
     );
-    if (!platformUser) {
-      return null;
+    if (err) {
+      return Result(null, err);
     }
-    return UserQueries.findOne(platformUser.id);
+    return await UserQueries.findOne(platformUser.id);
   }
 
   public static async createUser(
@@ -23,33 +26,39 @@ export class UserFn {
     acl: User.ACLs
   ): Promise<Result<User.Schema>> {
     const { platform, userId } = session;
-    const platformUser = await PlatformUserQueries.findOne(platform, userId);
-    if (platformUser) {
-      const user = await UserQueries.findOne(platformUser.id);
-      if (user) {
-        return Result(user, new Error("user already exists"));
-      }
-      return Result(user, null);
-    }
+    let err: Error | null = null;
+    let platformUser: PlatformUser.Schema | null = null;
 
-    const createdPlatformUser = await PlatformUserQueries.create({
-      id: 0,
+    ({ platformUser, err } = await PlatformUserQueries.findOne(
       platform,
-      userId,
-    });
-    if (!createdPlatformUser) {
-      return Result(null, new Error("failed to create platform user"));
+      userId
+    ));
+    if (!err) {
+      if ((await UserQueries.findOne(platformUser.id)).isOk()) {
+        return Result(null, new Error("user already exists"));
+      }
+    } else {
+      ({ platformUser, err } = await PlatformUserQueries.create({
+        platform,
+        userId,
+      }));
+      if (err) {
+        return Result(
+          null,
+          new Error(`failed to create platform user: ${err.message}`)
+        );
+      }
     }
 
-    const createdUser = await UserQueries.create({
-      uid: 0,
-      bindId: createdPlatformUser.id,
+    let user: User.Schema | null = null;
+    ({ user, err } = await UserQueries.create({
+      bindId: platformUser.id,
       acl,
-    });
-    if (!createdUser) {
-      return Result(null, new Error("failed to create user"));
+    }));
+    if (err) {
+      return Result(null, new Error(`failed to create user: ${err.message}`));
     }
 
-    return Result(createdUser, null);
+    return Result(user, null);
   }
 }

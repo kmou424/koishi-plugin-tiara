@@ -1,8 +1,9 @@
 import Global from "../../../core/global";
+import { Result } from "../../../core/type";
 import { User } from "./schema";
 
 export class UserQueries {
-  public static async findOne(uid: number): Promise<User.Schema | null> {
+  public static async findOne(uid: number): Promise<Result<User.Schema>> {
     const user = await Global.Context().model.get(
       User.TableName,
       {
@@ -16,17 +17,18 @@ export class UserQueries {
       }
     );
     if (user.length === 0) {
-      return null;
+      return Result(null, new Error("user not found"));
     }
-    return user[0];
+    return Result(user[0], null);
   }
 
-  public static async create(user: User.Schema): Promise<User.Schema> {
-    delete user.uid;
+  public static async create(
+    user: Omit<User.Schema, "uid">
+  ): Promise<Result<User.Schema>> {
     const inserted = await Global.Context().model.create(User.TableName, user);
     if (inserted) {
-      return user;
+      return Result(inserted, null);
     }
-    return null;
+    return Result(null, new Error("failed to create user"));
   }
 }

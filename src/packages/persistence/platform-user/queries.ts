@@ -1,11 +1,12 @@
 import Global from "../../../core/global";
+import { Result } from "../../../core/type";
 import { PlatformUser } from "./schema";
 
 export class PlatformUserQueries {
   public static async findOne(
     platform: string,
     platformUserId: string
-  ): Promise<PlatformUser.Schema | null> {
+  ): Promise<Result<PlatformUser.Schema>> {
     const platformUser = await Global.Context().model.get(
       PlatformUser.TableName,
       {
@@ -20,22 +21,21 @@ export class PlatformUserQueries {
       }
     );
     if (platformUser.length === 0) {
-      return null;
+      return Result(null, new Error("platform user not found"));
     }
-    return platformUser[0];
+    return Result(platformUser[0], null);
   }
 
   public static async create(
-    platformUser: PlatformUser.Schema
-  ): Promise<PlatformUser.Schema> {
-    delete platformUser.id;
+    platformUser: Omit<PlatformUser.Schema, "id">
+  ): Promise<Result<PlatformUser.Schema>> {
     const inserted = await Global.Context().model.create(
       PlatformUser.TableName,
       platformUser
     );
     if (inserted) {
-      return platformUser;
+      return Result(inserted, null);
     }
-    return null;
+    return Result(null, new Error("failed to create platform user"));
   }
 }
