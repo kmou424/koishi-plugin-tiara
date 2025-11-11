@@ -21,6 +21,7 @@ export namespace User {
     uid: {
       type: "integer",
       nullable: false,
+      initial: 100001,
     },
     bindId: {
       type: "integer",
@@ -37,10 +38,10 @@ export namespace User {
     },
     autoInc: true,
   };
-
-  SchemaRegistry.register({
-    tableName: User.TableName,
-    schema: User.Schema,
-    config: User.SchemaConfig,
-  });
 }
+
+SchemaRegistry.register({
+  tableName: User.TableName,
+  schema: User.Schema,
+  config: User.SchemaConfig,
+});
