@@ -18,16 +18,16 @@ export class UserQueries {
       }
     );
     if (user.length === 0) {
-      return Result(null, RuntimeUtil.NotFound);
+      return Result<User.Schema>(RuntimeUtil.NotFound);
     }
-    return Result(user[0], null);
+    return Result(user[0]);
   }
 
   public static async create(user: User.Schema): Promise<Result<User.Schema>> {
     const inserted = await Global.Context().model.create(User.TableName, user);
     if (inserted) {
-      return Result(inserted, null);
+      return Result(inserted);
     }
-    return Result(null, new Error("failed to create user"));
+    return Result<User.Schema>(new Error("failed to create user"));
   }
 }

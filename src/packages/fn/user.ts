@@ -18,10 +18,10 @@ export class UserFn {
       session.userId
     );
     if (err && err !== RuntimeUtil.NotFound) {
-      return Result(null, err);
+      return Result<User.Schema>(err);
     }
     if (!platformUser) {
-      return Result(null, RuntimeUtil.NotFound);
+      return Result<User.Schema>(RuntimeUtil.NotFound);
     }
     return await UserQueries.findOne(platformUser.id);
   }
@@ -39,11 +39,11 @@ export class UserFn {
       userId
     ));
     if (err && err !== RuntimeUtil.NotFound) {
-      return Result(null, err);
+      return Result<User.Schema>(err);
     }
     if (platformUser) {
       if ((await UserQueries.findOne(platformUser.id)).isOk()) {
-        return Result(null, new Error("user already exists"));
+        return Result<User.Schema>(new Error("user already exists"));
       }
     } else {
       ({ platformUser, err } = await PlatformUserQueries.create({
@@ -51,8 +51,7 @@ export class UserFn {
         userId,
       }));
       if (err) {
-        return Result(
-          null,
+        return Result<User.Schema>(
           new Error(`failed to create platform user: ${err.message}`)
         );
       }
@@ -72,15 +71,14 @@ export class UserFn {
 
         if (err) {
           release();
-          return Result(
-            null,
+          return Result<User.Schema>(
             new Error(`failed to create user: ${err.message}`)
           );
         }
         await UserProperties.AutoIncUid.setAsync(uid);
 
         release();
-        return Result(user, null);
+        return Result(user);
       });
   }
 }

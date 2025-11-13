@@ -8,9 +8,15 @@ export type Result<T> = {
   isErr: () => boolean;
 } & Omit<Record<string, T | null>, "err">;
 
+export function Result<T>(data: T): Result<T>;
+export function Result<T>(err: Error): Result<T>;
+export function Result<T>(data?: T, err?: Error | null): Result<T> {
+  return createResult<T>(data ?? null, err ?? null);
+}
+
 const dataKey = "data";
 
-export const Result = <T>(data: T | null, err: Error | null): Result<T> => {
+const createResult = <T>(data: T | null, err: Error | null): Result<T> => {
   const base: {
     data: T | null;
     err: Error | null;

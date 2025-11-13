@@ -22,9 +22,9 @@ export class PlatformUserQueries {
       }
     );
     if (platformUser.length === 0) {
-      return Result(null, RuntimeUtil.NotFound);
+      return Result<PlatformUser.Schema>(RuntimeUtil.NotFound);
     }
-    return Result(platformUser[0], null);
+    return Result(platformUser[0]);
   }
 
   public static async create(
@@ -35,8 +35,10 @@ export class PlatformUserQueries {
       platformUser
     );
     if (inserted) {
-      return Result(inserted, null);
+      return Result(inserted);
     }
-    return Result(null, new Error("failed to create platform user"));
+    return Result<PlatformUser.Schema>(
+      new Error("failed to create platform user")
+    );
   }
 }
