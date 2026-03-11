@@ -52,7 +52,7 @@ class MiniAppMessageHandlerProvider extends HandlerProvider {
         return;
       }
       const bvid = BilibiliTool.getBVFromUrl(url);
-      const aid = BilibiliTool.getAidFromUrl(url);
+      const aid = await BilibiliTool.getAidFromUrl(url);
       const video = await BilibiliAPI.getVideoInfo(bvid);
 
       await msg.session.send([

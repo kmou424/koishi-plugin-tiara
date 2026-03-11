@@ -28,9 +28,9 @@ class BilibiliTool {
     return match ? match[0] : null;
   }
 
-  static getAidFromUrl(url: string) {
-    const url = `https://api.bilibili.com/x/web-interface/view?bvid=${this.getBVFromUrl(url)}`;
-    const resp = await axios.get(url);
+  static async getAidFromUrl(url: string) {
+    const api_url = `https://api.bilibili.com/x/web-interface/view?bvid=${this.getBVFromUrl(url)}`;
+    const resp = await axios.get(api_url);
     return resp.data.data.aid;
   }
 }

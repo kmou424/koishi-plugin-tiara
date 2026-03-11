@@ -1,4 +1,4 @@
-import { Guild, GuildMember } from "@satorijs/protocol";
+import { Guild, GuildMember, GuildRole } from "@satorijs/protocol";
 import { Session } from "koishi";
 import TTLCache from "../cache/ttl_cache";
 import { MsgContent, MsgPlatform, MsgType } from "../type";
@@ -34,8 +34,10 @@ const parseMsgContent = (message: Array<Object> | null): Array<MsgContent> => {
   });
 };
 
-const parseMemberRole = (role: string): MemberRole => {
-  switch (role) {
+const parseMemberRole = (role: string | GuildRole): MemberRole => {
+  const roleName =
+    typeof role === "string" ? role : (role.name ?? "member").toLowerCase();
+  switch (roleName) {
     case "owner":
       return MemberRole.Owner;
     case "admin":
@@ -84,7 +86,7 @@ export class Message {
       const myRole: MemberRole = Math.max(
         ...((await this.members.get())
           ?.find((member) => member.user?.id === this.session.event.selfId)
-          ?.roles?.map((role) => parseMemberRole(role)) || [])
+          ?.roles?.map((role) => parseMemberRole(role)) || []),
       ) as MemberRole;
 
       // 是管理员或群主
@@ -92,15 +94,15 @@ export class Message {
         // 判断目标身份
         const targetRole: MemberRole = Math.max(
           ...(this.session.event?.member?.roles?.map((role) =>
-            parseMemberRole(role)
-          ) || [])
+            parseMemberRole(role),
+          ) || []),
         ) as MemberRole;
 
-        if (targetRole < MemberRole.Owner && myRole == MemberRole.Owner) {
+        if (targetRole < MemberRole.Owner && myRole === MemberRole.Owner) {
           // 群主可以撤回管理员和普通成员的消息
           return true;
         }
-        if (targetRole < MemberRole.Admin && myRole == MemberRole.Admin) {
+        if (targetRole < MemberRole.Admin && myRole === MemberRole.Admin) {
           // 管理员可以撤回普通成员的消息
           return true;
         }
@@ -124,7 +126,7 @@ export class Message {
     if (await this.canDelete()) {
       await this.session.bot.deleteMessage(
         this.session.channelId,
-        this.session.messageId
+        this.session.messageId,
       );
     }
   }
