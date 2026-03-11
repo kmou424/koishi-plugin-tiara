@@ -21,7 +21,7 @@ class MiniAppMessageHandlerProvider extends HandlerProvider {
   }
 
   private MiniAppMessageHandler: MessageHandlerFunc = (
-    ctx: PluginContext
+    ctx: PluginContext,
   ): MessageListener => {
     const template: Template = {
       templates: {
@@ -31,6 +31,7 @@ class MiniAppMessageHandlerProvider extends HandlerProvider {
 简介: {{desc_trimmed}}
 {{/if}}
 链接: {{url}}
+手机跳转: https://bili-redir.kmou424.moe/{{aid}}
 `,
       },
       render(args: Object): string {
@@ -51,6 +52,7 @@ class MiniAppMessageHandlerProvider extends HandlerProvider {
         return;
       }
       const bvid = BilibiliTool.getBVFromUrl(url);
+      const aid = BilibiliTool.getAidFromUrl(url);
       const video = await BilibiliAPI.getVideoInfo(bvid);
 
       await msg.session.send([
@@ -63,6 +65,7 @@ class MiniAppMessageHandlerProvider extends HandlerProvider {
               : video.desc,
           url: url,
           video,
+          aid,
         }),
         <>
           由 <at id={msg.session.event.member.user?.id} /> 分享

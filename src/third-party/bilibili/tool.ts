@@ -27,6 +27,12 @@ class BilibiliTool {
     const match = url.match(/BV\w+/);
     return match ? match[0] : null;
   }
+
+  static getAidFromUrl(url: string) {
+    const url = `https://api.bilibili.com/x/web-interface/view?bvid=${this.getBVFromUrl(url)}`;
+    const resp = await axios.get(url);
+    return resp.data.data.aid;
+  }
 }
 
 export { BilibiliTool };
